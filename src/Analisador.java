@@ -59,5 +59,7 @@ public class Analisador {
         } else {
             return new Comando(null, palavra2);
         }
+        //
+        //
     }
 }
