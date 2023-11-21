@@ -1,27 +1,31 @@
 import java.util.ArrayList;
 
 public class Comando {
-    private String palavraDeComando;
-    private ArrayList<String> comandoRestante;
+    private ArrayList<String> comando;
 
-    public Comando(String primeiraPalavra, ArrayList<String> comandoRestante) {
-        palavraDeComando = primeiraPalavra;
-        this.comandoRestante = comandoRestante;
+    public Comando(ArrayList<String> comando) {
+        this.comando = comando;
     }
 
     public String getPalavraDeComando() {
-        return palavraDeComando;
+        return comando.get(0);
     }
 
     public String comandoRestante() {
-        return comandoRestante();
+        String comandoRestante = "";
+
+        for (int i = 1; i < comando.size(); i++) {
+            comandoRestante += comando.get(i) + " ";
+        }
+
+        return comandoRestante;
     }
 
     public boolean ehDesconhecido() {
-        return (palavraDeComando == null);
+        return (getPalavraDeComando() == null);
     }
 
     public boolean temSegundaPalavra() {
-        return (!comandoRestante.isEmpty());
+        return (comandoRestante() != null);
     }
 }
