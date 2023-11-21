@@ -1,52 +1,92 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Jogo {
     private Analisador analisador;
     private Ambiente ambienteAtual;
     private ArrayList<Ambiente> ambientes;
     int posicao;
+    Random random;
 
     public Jogo() {
-        criarAmbientes();
-        ambienteAtual = ambientes.get(0);
-        posicao = 0;
-        analisador = new Analisador("ambiente", posicao);
+        criarAmbientes();// cria os ambientes
+        random = new Random();
+        posicao = random.nextInt(ambientes.size()); // define um ambiente aleatorio para iniciar o jogo
+        ambienteAtual = ambientes.get(posicao);
+        analisador = new Analisador(ambienteAtual.getTipo(), posicao);
     }
 
-    /**
-     * Cria todos os ambientes e liga as saidas deles
-     */
+    public void jogar() {
+        imprimirBoasVindas();
+
+        boolean terminado = false;
+        while (!terminado) {
+            Comando comando = analisador.pegarComando();
+            terminado = processarComando(comando);
+        }
+        System.out.println("Obrigado por jogar. Ate mais!");
+    }
+
+    private boolean processarComando(Comando comando) {
+        boolean querSair = false;
+        return querSair;
+    }
+
+    private void imprimirAjuda() {
+        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
+        System.out.println("pela universidade.");
+        System.out.println();
+        System.out.println("Suas palavras de comando sao:");
+        System.out.println("   ir sair ajuda");
+    }
+
+    private void irParaAmbiente(Comando comando) {
+        if (!comando.temSegundaPalavra()) {
+            System.out.println("Ir pra onde?");
+            return;
+        }
+    }
+
+    private boolean sair(Comando comando) {
+        if (comando.temSegundaPalavra()) {
+            System.out.println("Sair o que?");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private void criarAmbientes() {
 
         ambientes = new ArrayList<Ambiente>();
 
-        Ambiente mercurio = new Ambiente(0,
+        Ambiente mercurio = new Ambiente("planeta",
                 "Enfrenta extremos térmicos, com temperaturas que variam drasticamente entre o dia e a noite.");
-        Ambiente venus = new Ambiente(0,
+        Ambiente venus = new Ambiente("planeta",
                 "Envolto em uma atmosfera espessa e tóxica, é um mundo abrasador com uma paisagem árida e vulcões ativos");
-        Ambiente terra = new Ambiente(0,
+        Ambiente terra = new Ambiente("planeta",
                 "Aqui a temperatura e agradavel dependendo do local. voce esta em um planeta rochoso com uma ou mais luas ao redor.");
-        Ambiente lua = new Ambiente(1,
+        Ambiente lua = new Ambiente("lua",
                 "Ilumina noites com crateras marcantes, mares escuros e uma paisagem intrigante.");
-        Ambiente marte = new Ambiente(0,
+        Ambiente marte = new Ambiente("planeta",
                 "Apresenta paisagens desérticas, cânions profundos e antigas planícies marcianas, além de ser objeto de busca por evidências de vida passada");
-        Ambiente jupiter = new Ambiente(0,
+        Ambiente jupiter = new Ambiente("planeta",
                 "Exibe uma atmosfera turbulenta com faixas coloridas e uma tempestade colossal.");
-        Ambiente io = new Ambiente(1,
+        Ambiente io = new Ambiente("lua",
                 "é um mundo vulcânico marcado por uma superfície coberta por lava recente, geysers e montanhas coloridas.");
-        Ambiente europa = new Ambiente(1,
+        Ambiente europa = new Ambiente("lua",
                 "possui uma crosta gelada que esconde um vasto oceano subsuperficial, tornando-a apta a abrigar vida.");
-        Ambiente ganimedes = new Ambiente(1,
+        Ambiente ganimedes = new Ambiente("lua",
                 "exibe uma superfície com crateras antigas, sulcos e regiões mais jovens, indicando uma história geológica diversificada.");
-        Ambiente calisto = new Ambiente(1,
+        Ambiente calisto = new Ambiente("lua",
                 "apresenta uma paisagem antiga com uma abundância de crateras, sugerindo uma ausência de atividade geológica significativa");
-        Ambiente saturno = new Ambiente(0,
+        Ambiente saturno = new Ambiente("planeta",
                 "Muito lindo visto do espaco, com uma estrutura impressionante e uma complexa dinâmica atmosférica.");
-        Ambiente urano = new Ambiente(0,
+        Ambiente urano = new Ambiente("planeta",
                 " Inclinado em seu eixo, destaca-se por sua atmosfera fria e pela presença de anéis e luas excêntricos.");
-        Ambiente netuno = new Ambiente(0,
+        Ambiente netuno = new Ambiente("planeta",
                 "envolto em ventos supersonicos e com uma atmosfera dinâmica, exibe uma coloração azul profunda e intrigantes características atmosféricas.");
-        Ambiente plutao = new Ambiente(0,
+        Ambiente plutao = new Ambiente("planeta",
                 "Sua atmosfera tênue, superfície gelada e lua carismática, revelam a complexidade deste mundo distante.");
 
         ambientes.add(mercurio);
@@ -63,39 +103,6 @@ public class Jogo {
         ambientes.add(urano);
         ambientes.add(netuno);
         ambientes.add(plutao);
-    }
-
-    /*
-     * Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
-     * 
-     * // cria os ambientes
-     * fora = new
-     * Ambiente("do lado de fora da entrada principal de uma universidade");
-     * anfiteatro = new Ambiente("no anfiteatro");
-     * cantina = new Ambiente("na cantina do campus");
-     * laboratorio = new Ambiente("no laboratorio de computacao");
-     * escritorio = new Ambiente("na sala de administracao dos computadores");
-     * 
-     * // inicializa as saidas dos ambientes
-     * fora.ajustarSaidas(null, anfiteatro, laboratorio, cantina);
-     * anfiteatro.ajustarSaidas(null, null, null, fora);
-     * cantina.ajustarSaidas(null, fora, null, null);
-     * laboratorio.ajustarSaidas(fora, escritorio, null, null);
-     * escritorio.ajustarSaidas(null, null, null, laboratorio);
-     * 
-     * ambienteAtual = fora; // o jogo comeca do lado de fora
-     * }
-     */
-
-    public void jogar() {
-        imprimirBoasVindas();
-
-        boolean terminado = false;
-        while (!terminado) {
-            Comando comando = analisador.pegarComando();
-            terminado = processarComando(comando);
-        }
-        System.out.println("Obrigado por jogar. Ate mais!");
     }
 
     private void imprimirBoasVindas() {
@@ -121,51 +128,5 @@ public class Jogo {
         System.out.println("planeta atual: " + ambienteAtual.getDescricao());
 
         System.out.print("Saidas: ");
-    }
-
-    /**
-     * Dado um comando, processa-o (ou seja, executa-o)
-     * 
-     * @param comando O Comando a ser processado.
-     * @return true se o comando finaliza o jogo.
-     */
-    private boolean processarComando(Comando comando) {
-        boolean querSair = false;
-        return querSair;
-    }
-
-    // Implementacoes dos comandos do usuario
-
-    /**
-     * Printe informacoes de ajuda.
-     * Aqui nos imprimimos algo bobo e enigmatico e a lista de
-     * palavras de comando
-     */
-    private void imprimirAjuda() {
-        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela universidade.");
-        System.out.println();
-        System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
-    }
-
-    /**
-     * Tenta ir em uma direcao. Se existe uma saida entra no
-     * novo ambiente, caso contrario imprime mensagem de erro.
-     */
-    private void irParaAmbiente(Comando comando) {
-        if (!comando.temSegundaPalavra()) {
-            System.out.println("Ir pra onde?");
-            return;
-        }
-    }
-
-    private boolean sair(Comando comando) {
-        if (comando.temSegundaPalavra()) {
-            System.out.println("Sair o que?");
-            return false;
-        } else {
-            return true; // sinaliza que nos queremos sair
-        }
     }
 }

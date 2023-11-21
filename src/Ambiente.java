@@ -1,14 +1,14 @@
 
 public class Ambiente {
-    private int tipo;
+    private String tipo;
     private String descricao;
 
-    public Ambiente(int tipo, String descricao) { // 0 = planeta, 1 = lua
+    public Ambiente(String tipo, String descricao) {
         this.tipo = tipo;
         this.descricao = descricao;
     }
 
-    public int getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
