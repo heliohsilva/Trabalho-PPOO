@@ -1,49 +1,27 @@
+import java.util.ArrayList;
+
 public class Comando {
     private String palavraDeComando;
-    private String segundaPalavra;
+    private ArrayList<String> comandoRestante;
 
-    /**
-     * Cria um objeto comando. Primeira e segunda palavra devem ser
-     * fornecidas, mas qualquer uma (ou ambas) podem ser null.
-     * 
-     * @param primeiraPalavra A primeira palavra do comando. Null se
-     *                        o comando nao foi reconhecido
-     * @param segundaPalavra  A segunda palavra do comando.
-     */
-    public Comando(String primeiraPalavra, String segundaPalavra) {
+    public Comando(String primeiraPalavra, ArrayList<String> comandoRestante) {
         palavraDeComando = primeiraPalavra;
-        this.segundaPalavra = segundaPalavra;
+        this.comandoRestante = comandoRestante;
     }
 
-    /**
-     * Retorna a palavra de comando (a primeira palavra) deste comando.
-     * Se o comando nao foi entendido, o resultado eh null.
-     * 
-     * @return A palavra de comando.
-     */
     public String getPalavraDeComando() {
         return palavraDeComando;
     }
 
-    /**
-     * @return A segunda palavra deste comando. Retorna null se
-     *         nao existe segunda palavra.
-     */
-    public String getSegundaPalavra() {
-        return segundaPalavra;
+    public String comandoRestante() {
+        return comandoRestante();
     }
 
-    /**
-     * @return true se o comando nao foi entendido.
-     */
     public boolean ehDesconhecido() {
         return (palavraDeComando == null);
     }
 
-    /**
-     * @return true se o comando tem uma segunda palavra.
-     */
     public boolean temSegundaPalavra() {
-        return (segundaPalavra != null);
+        return (!comandoRestante.isEmpty());
     }
 }
