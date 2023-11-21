@@ -2,15 +2,15 @@ public class PalavrasComando {
 
     private String[] comandosValidos;
 
-    public PalavrasComando(String tipoDeAmbiente, int posicao) {
+    public PalavrasComando(String tipoDeAmbiente/* planeta ou nave */, int posicao) {
         if (tipoDeAmbiente == "planeta") {
             if (posicao == 1) { // posicao inicial
-                comandosValidos = new String[] { "explorar planeta", "entrar na nave", "quit", "ajuda" };
+                comandosValidos = new String[] { "explorar", "entrar na nave", "quit", "ajuda" };
             } else if (posicao == 2) { // posicao nao inicial
                 comandosValidos = new String[] { "explorar", "voltar para a nave", "quit", "ajuda" };
             }
         } else if (tipoDeAmbiente == "nave") {
-            comandosValidos = new String[] { "viajar para outro planeta", "quit", "ajuda" };
+            comandosValidos = new String[] { "viajar", "quit", "ajuda" };
         }
     }
 

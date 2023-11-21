@@ -1,48 +1,45 @@
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Random;
 
 //ambiente interno de um planeta. contem sessoes exploraveis(mapa interno)
 public class AmbienteInterno {
-    private String descricao;
-    private HashMap<String, SessaoExploravel> sessoesExploraveis;
-    private Random random;
+    private ArrayList<Cenario> cenarios;
+    private int quantidadedeCenarios;
 
-    public AmbienteInterno(String descricao) {
-        this.descricao = descricao;
-        sessoesExploraveis = new HashMap<String, SessaoExploravel>();
-        random = new Random();
-    }
+    private Cenario cenarioAtual;
 
-    public void ajustarSaidas(String direcao, SessaoExploravel sessaoExploravel) {
-        sessoesExploraveis.put(direcao, sessaoExploravel);
-    }
+    // cada planeta tem um ambiente interno composto por um numero aleatorio de
+    // cenarios
+    // cada cenario tem uma ou duas saidas e pode ou nao ter algum item
 
-    public String getDescricao() {
-        return descricao;
-    }
+    public AmbienteInterno(String nome) {
+        cenarios = new ArrayList<Cenario>();
+        quantidadedeCenarios = new Random().nextInt(9) + 1; // de 1 a 10
 
-    public SessaoExploravel getSaida(String direcao) {
-        return sessoesExploraveis.get(direcao);
-    }
-
-    public String direcoesDeSaida() {
-        String direcoes = "Saidas: ";
-        for (String direcao : this.sessoesExploraveis.keySet()) {
-            direcoes += direcao + " ";
-        }
-        return direcoes;
-    }
-
-    public SessaoExploravel getSessaoExploravelAleatoria() {
-        int numeroAleatorio = random.nextInt(sessoesExploraveis.size());
-        int i = 0;
-        for (SessaoExploravel sessaoExploravel : sessoesExploraveis.values()) {
-            if (i == numeroAleatorio) {
-                return sessaoExploravel;
+        for (int i = 0; i < quantidadedeCenarios; i++) {
+            if (i == 0) {
+                cenarios.add(new Cenario(true, false));
+            } else if (i == quantidadedeCenarios - 1) {
+                cenarios.add(new Cenario(false, true));
+            } else {
+                cenarios.add(new Cenario(false, false));
             }
-            i++;
         }
-        return null;
+
+        cenarioAtual = cenarios.get(0);
     }
+
+    public Cenario getCenarioAtual() {
+        return cenarioAtual;
+    }
+
+    public void avancarCenario() {
+        cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) + 1);
+    }
+
+    public void retrocederCenario() {
+        cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) - 1);
+    }
+
 }
