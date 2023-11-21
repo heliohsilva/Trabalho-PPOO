@@ -1,12 +1,13 @@
 public class Planeta {
     private String nome;
     private int tipo;
+    AmbienteInterno ambienteInterno;
 
-    public Planeta(String nome, int tipo) {
+    public Planeta(String nome, int tipo) { // tipo 1 = planeta, tipo 2 = lua
         this.nome = nome;
         this.tipo = tipo;
 
-        AmbienteInterno ambienteInterno = new AmbienteInterno("Ambiente interno do planeta " + nome);
+        ambienteInterno = new AmbienteInterno("Ambiente interno do planeta " + nome);
     }
 
     public String getNome() {
