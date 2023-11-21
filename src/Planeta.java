@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Planeta {
     private String nome;
     private String tipo; // planeta ou lua
@@ -22,5 +24,13 @@ public class Planeta {
 
     public String getNome() {
         return nome;
+    }
+
+    public int getPosicao() {
+        return ambienteInterno.getCenarioAtual();
+    }
+
+    public ArrayList<String> getSaida() {
+        return ambienteInterno.getSaida();
     }
 }

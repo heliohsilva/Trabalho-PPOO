@@ -30,8 +30,9 @@ public class AmbienteInterno {
         cenarioAtual = cenarios.get(0);
     }
 
-    public Cenario getCenarioAtual() {
-        return cenarioAtual;
+    public int getCenarioAtual() {
+        return cenarios.indexOf(cenarioAtual);
+
     }
 
     public void avancarCenario() {
@@ -40,6 +41,10 @@ public class AmbienteInterno {
 
     public void retrocederCenario() {
         cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) - 1);
+    }
+
+    public ArrayList<String> getSaida() {
+        return cenarioAtual.getSaida();
     }
 
 }

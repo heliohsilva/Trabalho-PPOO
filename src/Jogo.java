@@ -3,8 +3,8 @@ import java.util.Random;
 
 public class Jogo {
     private Analisador analisador;
-    private Planeta PlanetaAtual;
-    private ArrayList<Planeta> Planetas;
+    private Planeta planetaAtual;
+    private ArrayList<Planeta> planetas;
     int posicao;
     Random random;
     Jogador jogador;
@@ -12,10 +12,10 @@ public class Jogo {
     public Jogo() {
         criarPlanetas();// cria os Planetas
         random = new Random();
-        posicao = random.nextInt(Planetas.size()); // define um Planeta aleatorio para iniciar o jogo
-        PlanetaAtual = Planetas.get(posicao);
+        posicao = random.nextInt(planetas.size()); // define um Planeta aleatorio para iniciar o jogo
+        planetaAtual = planetas.get(posicao);
         jogador = new Jogador();
-        analisador = new Analisador(PlanetaAtual.getTipo(), posicao);
+        analisador = new Analisador(planetaAtual.getTipo(), posicao);
     }
 
     public void jogar() {
@@ -32,6 +32,8 @@ public class Jogo {
     private boolean processarComando(Comando comando) {
         boolean querSair = false;
         return querSair;
+
+        String palavraDeComando = comando.getPalavraDeComando();
     }
 
     private void imprimirAjuda() {
@@ -60,7 +62,7 @@ public class Jogo {
 
     private void criarPlanetas() {
 
-        Planetas = new ArrayList<Planeta>();
+        planetas = new ArrayList<Planeta>();
 
         Planeta mercurio = new Planeta("Mercurio", "planeta",
                 "Enfrenta extremos térmicos, com temperaturas que variam drasticamente entre o dia e a noite.");
@@ -91,20 +93,20 @@ public class Jogo {
         Planeta plutao = new Planeta("Plutao", "planeta",
                 "Sua atmosfera tênue, superfície gelada e lua carismática, revelam a complexidade deste mundo distante.");
 
-        Planetas.add(mercurio);
-        Planetas.add(venus);
-        Planetas.add(terra);
-        Planetas.add(lua);
-        Planetas.add(marte);
-        Planetas.add(jupiter);
-        Planetas.add(io);
-        Planetas.add(europa);
-        Planetas.add(ganimedes);
-        Planetas.add(calisto);
-        Planetas.add(saturno);
-        Planetas.add(urano);
-        Planetas.add(netuno);
-        Planetas.add(plutao);
+        planetas.add(mercurio);
+        planetas.add(venus);
+        planetas.add(terra);
+        planetas.add(lua);
+        planetas.add(marte);
+        planetas.add(jupiter);
+        planetas.add(io);
+        planetas.add(europa);
+        planetas.add(ganimedes);
+        planetas.add(calisto);
+        planetas.add(saturno);
+        planetas.add(urano);
+        planetas.add(netuno);
+        planetas.add(plutao);
     }
 
     private void imprimirBoasVindas() {
@@ -127,8 +129,16 @@ public class Jogo {
         System.out.println("Boa sorte!");
         System.out.println();
 
-        System.out.println("planeta atual: " + PlanetaAtual.getDescricao());
+        System.out.println("planeta atual: " + planetaAtual.getDescricao());
 
         System.out.print("Saidas: ");
+    }
+
+    private void imprimirSaidas() {
+        ArrayList<String> saidas = planetaAtual.getSaida();
+
+        for (String saida : saidas) {
+            System.out.print(saida + " ");
+        }
     }
 }
