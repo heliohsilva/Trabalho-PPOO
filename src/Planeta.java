@@ -19,4 +19,8 @@ public class Planeta {
     public String getDescricao() {
         return descricao;
     }
+
+    public String getNome() {
+        return nome;
+    }
 }

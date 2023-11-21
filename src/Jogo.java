@@ -7,12 +7,14 @@ public class Jogo {
     private ArrayList<Planeta> Planetas;
     int posicao;
     Random random;
+    Jogador jogador;
 
     public Jogo() {
         criarPlanetas();// cria os Planetas
         random = new Random();
         posicao = random.nextInt(Planetas.size()); // define um Planeta aleatorio para iniciar o jogo
         PlanetaAtual = Planetas.get(posicao);
+        jogador = new Jogador();
         analisador = new Analisador(PlanetaAtual.getTipo(), posicao);
     }
 
@@ -60,33 +62,33 @@ public class Jogo {
 
         Planetas = new ArrayList<Planeta>();
 
-        Planeta mercurio = new Planeta("mercurio", "planeta",
+        Planeta mercurio = new Planeta("Mercurio", "planeta",
                 "Enfrenta extremos térmicos, com temperaturas que variam drasticamente entre o dia e a noite.");
-        Planeta venus = new Planeta("venus", "planeta",
+        Planeta venus = new Planeta("Venus", "planeta",
                 "Envolto em uma atmosfera espessa e tóxica, é um mundo abrasador com uma paisagem árida e vulcões ativos");
-        Planeta terra = new Planeta("terra", "planeta",
+        Planeta terra = new Planeta("Terra", "planeta",
                 "Aqui a temperatura e agradavel dependendo do local. voce esta em um planeta rochoso com uma ou mais luas ao redor.");
-        Planeta lua = new Planeta("lua", "lua",
+        Planeta lua = new Planeta("Lua", "lua",
                 "Ilumina noites com crateras marcantes, mares escuros e uma paisagem intrigante.");
-        Planeta marte = new Planeta("marte", "planeta",
+        Planeta marte = new Planeta("Marte", "planeta",
                 "Apresenta paisagens desérticas, cânions profundos e antigas planícies marcianas, além de ser objeto de busca por evidências de vida passada");
-        Planeta jupiter = new Planeta("jupiter", "planeta",
+        Planeta jupiter = new Planeta("Jupiter", "planeta",
                 "Exibe uma atmosfera turbulenta com faixas coloridas e uma tempestade colossal.");
-        Planeta io = new Planeta("io", "lua",
+        Planeta io = new Planeta("Io", "lua",
                 "é um mundo vulcânico marcado por uma superfície coberta por lava recente, geysers e montanhas coloridas.");
-        Planeta europa = new Planeta("europa", "lua",
+        Planeta europa = new Planeta("Europa", "lua",
                 "possui uma crosta gelada que esconde um vasto oceano subsuperficial, tornando-a apta a abrigar vida.");
-        Planeta ganimedes = new Planeta("ganimedes", "lua",
+        Planeta ganimedes = new Planeta("Ganimedes", "lua",
                 "exibe uma superfície com crateras antigas, sulcos e regiões mais jovens, indicando uma história geológica diversificada.");
-        Planeta calisto = new Planeta("calisto", "lua",
+        Planeta calisto = new Planeta("Calisto", "lua",
                 "apresenta uma paisagem antiga com uma abundância de crateras, sugerindo uma ausência de atividade geológica significativa");
-        Planeta saturno = new Planeta("saturno", "planeta",
+        Planeta saturno = new Planeta("Saturno", "planeta",
                 "Muito lindo visto do espaco, com uma estrutura impressionante e uma complexa dinâmica atmosférica.");
-        Planeta urano = new Planeta("urano", "planeta",
+        Planeta urano = new Planeta("Urano", "planeta",
                 " Inclinado em seu eixo, destaca-se por sua atmosfera fria e pela presença de anéis e luas excêntricos.");
-        Planeta netuno = new Planeta("netuno", "planeta",
+        Planeta netuno = new Planeta("Netuno", "planeta",
                 "envolto em ventos supersonicos e com uma atmosfera dinâmica, exibe uma coloração azul profunda e intrigantes características atmosféricas.");
-        Planeta plutao = new Planeta("plutao", "planeta",
+        Planeta plutao = new Planeta("Plutao", "planeta",
                 "Sua atmosfera tênue, superfície gelada e lua carismática, revelam a complexidade deste mundo distante.");
 
         Planetas.add(mercurio);
