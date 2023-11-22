@@ -3,17 +3,21 @@ import java.util.Random;
 
 public class Jogo {
     private Analisador analisador;
-    private Ambiente ambienteAtual;
-    private ArrayList<Ambiente> ambientes;
+    private Planeta planetaAtual;
+    private ArrayList<Planeta> planetas;
     int posicao;
     Random random;
+    Jogador jogador;
 
     public Jogo() {
-        criarAmbientes();// cria os ambientes
+        criarPlanetas();// cria os Planetas
         random = new Random();
-        posicao = random.nextInt(ambientes.size()); // define um ambiente aleatorio para iniciar o jogo
-        ambienteAtual = ambientes.get(posicao);
-        analisador = new Analisador(ambienteAtual.getTipo(), posicao);
+        posicao = random.nextInt(planetas.size()); // define um Planeta aleatorio para iniciar o jogo
+        planetaAtual = planetas.get(posicao);
+        jogador = new Jogador();
+        jogador.setPlanetaAtual(planetaAtual);
+
+        analisador = new Analisador();
     }
 
     public void jogar() {
@@ -21,6 +25,8 @@ public class Jogo {
 
         boolean terminado = false;
         while (!terminado) {
+            System.out.print("\nSaidas: ");
+            imprimirSaidas();
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
@@ -28,8 +34,66 @@ public class Jogo {
     }
 
     private boolean processarComando(Comando comando) {
+
+        if (comando == null) {
+            System.out.println("Comando invalido!");
+            return false;
+        }
+
         boolean querSair = false;
+        String palavraGatilho = comando.getGatilho();
+        System.out.println("palavra de comando: " + palavraGatilho);
+
+        if (palavraGatilho.equals("quit")) {
+            querSair = true;
+        } else {
+            switch (palavraGatilho) {
+                case "plantar":
+                    if (plantar()) {
+                        querSair = true;
+                    }
+                    break;
+                case "ir":
+                    explorarPlaneta(comando);
+                    break;
+                case "viajar":
+                    viajar(comando);
+                    break;
+                case "ajuda":
+                    imprimirAjuda();
+                    break;
+                // case "retornar":
+                // jogador.voltarInicio();
+                // break;
+                // case "saber":
+                // jogador.saberPlaneta();
+                case "dica":
+                    System.out.println(planetaAtual.getDescricao());
+                    break;
+                default:
+                    System.out.println("Comando invalido!");
+                    break;
+            }
+        }
         return querSair;
+
+    }
+
+    private boolean plantar() {
+        if (jogador.plantarArvore()) {
+            System.out.println("Parabens! Voce salvou a humanidade!");
+            return true;
+        } else {
+            System.out.println("Voce nao esta no planeta certo para plantar a arvore da vida");
+            if (jogador.getPlantasDeArvore() > 0) {
+                System.out.println(
+                        "Voce ainda tem " + jogador.getPlantasDeArvore() + " arvores para plantar");
+            } else {
+                System.out.println("Voce nao tem mais arvores para plantar");
+                return true;
+            }
+        }
+        return false;
     }
 
     private void imprimirAjuda() {
@@ -37,96 +101,166 @@ public class Jogo {
         System.out.println("pela universidade.");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
+        System.out.println(analisador.getComandosAceitos());
+
     }
 
-    private void irParaAmbiente(Comando comando) {
-        if (!comando.temSegundaPalavra()) {
-            System.out.println("Ir pra onde?");
-            return;
+    private void explorarPlaneta(Comando comando) {
+        if (comando.getComplemento() != null) {
+            System.out.println("comando: " + comando.getGatilho());
+            System.out.println("destino: " + comando.getComplemento());
+            if (comando.getComplemento().equals("sul")) {
+                planetaAtual.avancarCenario();
+                if (planetaAtual.getItem() != null) {
+                    verificarItem(planetaAtual.getItem());
+                }
+                jogador.decrementarEnergia(1);
+            } else if (comando.getComplemento().equals("norte")) {
+                planetaAtual.retrocederCenario();
+                jogador.decrementarEnergia(1);
+            } else {
+                System.out.println("destino invalido");
+            }
         }
     }
 
-    private boolean sair(Comando comando) {
-        if (comando.temSegundaPalavra()) {
-            System.out.println("Sair o que?");
-            return false;
+    private void viajar(Comando comando) {
+        if (planetaAtual.getPosicao() != 0) {
+            System.out.println("Voce precisa voltar para a nave antes de viajar");
         } else {
-            return true;
+            if (comando.getComplemento() != null) {
+                System.out.println("comando: " + comando.getGatilho());
+                System.out.println("destino: " + comando.getComplemento());
+                if (comando.getComplemento().equals("direita")) {
+                    int distancia = analisador.getDistanciaViagem();
+
+                    if (jogador.getNave().getCombustivel() >= distancia) {
+                        jogador.viajar(distancia, planetas.get(planetaAtual.getPosicao() + 1));
+                        planetaAtual = planetas.get(planetaAtual.getPosicao() + 1);
+                    } else {
+                        System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
+                    }
+                } else if (comando.getComplemento().equals("esquerda")) {
+                    int distancia = analisador.getDistanciaViagem();
+
+                    if (jogador.getNave().getCombustivel() >= distancia) {
+                        jogador.viajar(distancia, planetas.get(planetaAtual.getPosicao() + 1));
+                        planetaAtual = planetas.get(planetaAtual.getPosicao() + 1);
+                    } else {
+                        System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
+                    }
+                } else {
+                    System.out.println("direcao invalida");
+                }
+
+                System.out.println("planeta atual: " + planetaAtual.getDescricao());
+
+            } else {
+                System.out.println("destino invalido");
+            }
+
         }
     }
 
-    private void criarAmbientes() {
+    public void verificarItem(String item) {
+        System.out.println("Voce encontrou um " + item + "!");
+        if (item == "java coffee") {
+            jogador.incrementarEnergia(20);
+            System.out.println("Voce recuperou 20 pontos de energia");
+        }
+        if (item == "rebimboca da parafuseta") {
+            if (jogador.getNave().getEstado() == false) {
+                jogador.getNave().consertar();
+                System.out.println("Voce consertou a nave");
+            }
+        }
+        if (item == "combustivel") {
+            jogador.getNave().incrementarCombustivel(5);
+            System.out.println("Voce recuperou 5 pontos de combustivel");
+        }
+    }
 
-        ambientes = new ArrayList<Ambiente>();
+    private void criarPlanetas() {
 
-        Ambiente mercurio = new Ambiente("planeta",
+        planetas = new ArrayList<Planeta>();
+
+        Planeta mercurio = new Planeta("Mercurio", "planeta",
                 "Enfrenta extremos térmicos, com temperaturas que variam drasticamente entre o dia e a noite.");
-        Ambiente venus = new Ambiente("planeta",
+        Planeta venus = new Planeta("Venus", "planeta",
                 "Envolto em uma atmosfera espessa e tóxica, é um mundo abrasador com uma paisagem árida e vulcões ativos");
-        Ambiente terra = new Ambiente("planeta",
+        Planeta terra = new Planeta("Terra", "planeta",
                 "Aqui a temperatura e agradavel dependendo do local. voce esta em um planeta rochoso com uma ou mais luas ao redor.");
-        Ambiente lua = new Ambiente("lua",
+        Planeta lua = new Planeta("Lua", "lua",
                 "Ilumina noites com crateras marcantes, mares escuros e uma paisagem intrigante.");
-        Ambiente marte = new Ambiente("planeta",
+        Planeta marte = new Planeta("Marte", "planeta",
                 "Apresenta paisagens desérticas, cânions profundos e antigas planícies marcianas, além de ser objeto de busca por evidências de vida passada");
-        Ambiente jupiter = new Ambiente("planeta",
+        Planeta jupiter = new Planeta("Jupiter", "planeta",
                 "Exibe uma atmosfera turbulenta com faixas coloridas e uma tempestade colossal.");
-        Ambiente io = new Ambiente("lua",
+        Planeta io = new Planeta("Io", "lua",
                 "é um mundo vulcânico marcado por uma superfície coberta por lava recente, geysers e montanhas coloridas.");
-        Ambiente europa = new Ambiente("lua",
+        Planeta europa = new Planeta("Europa", "lua",
                 "possui uma crosta gelada que esconde um vasto oceano subsuperficial, tornando-a apta a abrigar vida.");
-        Ambiente ganimedes = new Ambiente("lua",
+        Planeta ganimedes = new Planeta("Ganimedes", "lua",
                 "exibe uma superfície com crateras antigas, sulcos e regiões mais jovens, indicando uma história geológica diversificada.");
-        Ambiente calisto = new Ambiente("lua",
+        Planeta calisto = new Planeta("Calisto", "lua",
                 "apresenta uma paisagem antiga com uma abundância de crateras, sugerindo uma ausência de atividade geológica significativa");
-        Ambiente saturno = new Ambiente("planeta",
+        Planeta saturno = new Planeta("Saturno", "planeta",
                 "Muito lindo visto do espaco, com uma estrutura impressionante e uma complexa dinâmica atmosférica.");
-        Ambiente urano = new Ambiente("planeta",
+        Planeta urano = new Planeta("Urano", "planeta",
                 " Inclinado em seu eixo, destaca-se por sua atmosfera fria e pela presença de anéis e luas excêntricos.");
-        Ambiente netuno = new Ambiente("planeta",
+        Planeta netuno = new Planeta("Netuno", "planeta",
                 "envolto em ventos supersonicos e com uma atmosfera dinâmica, exibe uma coloração azul profunda e intrigantes características atmosféricas.");
-        Ambiente plutao = new Ambiente("planeta",
+        Planeta plutao = new Planeta("Plutao", "planeta",
                 "Sua atmosfera tênue, superfície gelada e lua carismática, revelam a complexidade deste mundo distante.");
 
-        ambientes.add(mercurio);
-        ambientes.add(venus);
-        ambientes.add(terra);
-        ambientes.add(lua);
-        ambientes.add(marte);
-        ambientes.add(jupiter);
-        ambientes.add(io);
-        ambientes.add(europa);
-        ambientes.add(ganimedes);
-        ambientes.add(calisto);
-        ambientes.add(saturno);
-        ambientes.add(urano);
-        ambientes.add(netuno);
-        ambientes.add(plutao);
+        planetas.add(mercurio);
+        planetas.add(venus);
+        planetas.add(terra);
+        planetas.add(lua);
+        planetas.add(marte);
+        planetas.add(jupiter);
+        planetas.add(io);
+        planetas.add(europa);
+        planetas.add(ganimedes);
+        planetas.add(calisto);
+        planetas.add(saturno);
+        planetas.add(urano);
+        planetas.add(netuno);
+        planetas.add(plutao);
     }
 
     private void imprimirBoasVindas() {
-        System.out.println();
-        System.out.println("Bem-vindo ao Fundacao Terra!");
-        System.out.println("Fundacao Terra eh um novo jogo de aventura incrivelmente chato.");
-        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
-        System.out.println(
-                "Muitos anos atras, antes mesmo da grande Colisao, a humanidade saia de seu planeta natal para explorar o espaço.");
-        System.out.println(
-                "Apos a Colisao, a humanidade se viu presa em uma nova super-galaxia hostil e desconhecida, com muitas de suas colonias sendo ameacadas constantemente");
-        System.out.println(
-                "As escritas antigas indicam que o berço da vida humana se encontra em um planeta azul rochoso com uma ou mais luas ao redor.");
-        System.out.println("Aquele e o unico lugar onde a arvore da vida pode ser plantada em toda a super-galaxia.");
-        System.out.println(
-                "Tudo indica que voce esta no sistema planetario certo. Agora voce precisa encontrar o planeta e garantir nossa existencia que depende da arvore da vida.");
-        System.out.println("Seu combustivel e escasso, entao voce precisa ser rapido e eficiente.");
-        System.out.println(
-                "Durante sua jornada, voce pode sofrer com tempestades solares, chuvas de asteroides ou ate mesmo com a falta de energia.");
-        System.out.println("Boa sorte!");
+
+        System.out.println(pegarMensagemInicial());
         System.out.println();
 
-        System.out.println("planeta atual: " + ambienteAtual.getDescricao());
+        System.out.println("planeta atual: " + planetaAtual.getDescricao());
+    }
 
-        System.out.print("Saidas: ");
+    private void imprimirSaidas() {
+        ArrayList<String> saidas = planetaAtual.getSaida();
+
+        for (String saida : saidas) {
+            System.out.print(saida + " ");
+        }
+    }
+
+    private String pegarMensagemInicial() {
+        return ("Bem-vindo ao Fundacao Terra!\n" +
+                "Fundacao Terra eh um novo jogo de aventura incrivelmente chato.\n" +
+                "Digite 'ajuda' se voce precisar de ajuda.\n" +
+                "Muitos anos atras, antes mesmo da grande Colisao, a humanidade saia de seu planeta natal para explorar o espaço.\n"
+                +
+                "Apos a Colisao, a humanidade se viu presa em uma nova super-galaxia hostil e desconhecida, com muitas de suas colonias sendo ameacadas constantemente\n"
+                +
+                "As escritas antigas indicam que o berço da vida humana se encontra em um planeta azul rochoso com uma ou mais luas ao redor.\n"
+                +
+                "Aquele e o unico lugar onde a arvore da vida pode ser plantada em toda a super-galaxia.\n" +
+                "Tudo indica que voce esta no sistema planetario certo. Agora voce precisa encontrar o planeta e garantir nossa existencia que depende da arvore da vida.\n"
+                +
+                "Seu combustivel e escasso, entao voce precisa ser rapido e eficiente.\n" +
+                "Durante sua jornada, voce pode sofrer com tempestades solares, chuvas de asteroides ou ate mesmo com a falta de energia.\n"
+                +
+                "Boa sorte!\n");
     }
 }

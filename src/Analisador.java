@@ -2,44 +2,53 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Analisador {
-    private PalavrasComando palavrasDeComando;
-    private Scanner entrada;
+    private PalavrasComando comandosAceitos;
+    private Scanner in;
 
-    public Analisador(String tipoDeAmbiente, int posicao) {
-        palavrasDeComando = new PalavrasComando(tipoDeAmbiente, posicao);
-        entrada = new Scanner(System.in);
+    public Analisador() {
+        in = new Scanner(System.in);
+        comandosAceitos = new PalavrasComando();
     }
 
-    /**
-     * @return O proximo comando do usuario
-     */
+    public String getComandosAceitos() {
+        return comandosAceitos.getComandos();
+    }
+
+    public int getDistanciaViagem() {
+        System.out.print("\nQuantos planetas deseja viajar? ");
+        return in.nextInt();
+    }
+
     public Comando pegarComando() {
-        String linha; // guardara uma linha inteira
-        String palavra1 = null;
+        String linha;
+        String comandoValidos = comandosAceitos.getComandos();
+
+        System.out.print("\nComandos validos: ");
+
+        for (String comando : comandoValidos.split(" ")) {
+            System.out.print(comando + " | ");
+        }
+
+        System.out.print("\n\n> ");
+
+        linha = in.nextLine();
+
         ArrayList<String> palavras = new ArrayList<String>();
+        Scanner splitString = new Scanner(linha);
 
-        System.out.print("> "); // imprime o prompt
+        if (splitString.hasNext()) {
+            palavras.add(splitString.next());
 
-        linha = entrada.nextLine();
-
-        // Tenta encontrar ate duas palavras na linha
-        Scanner tokenizer = new Scanner(linha);
-        if (tokenizer.hasNext()) {
-            palavra1 = tokenizer.next(); // pega a primeira palavra
-            if (tokenizer.hasNext()) {
-                palavras.add(tokenizer.next()); // pega a segunda palavra
-                // obs: nos simplesmente ignoramos o resto da linha.
+            if (splitString.hasNext()) {
+                palavras.add(splitString.next());
             }
         }
 
-        // Agora verifica se esta palavra eh conhecida. Se for, cria um comando
-        //
-        // com ela. Se nao, cria um comando "null" (para comando desconhecido)
-        if (palavrasDeComando.ehComando(palavra1)) {
-            return new Comando(palavra1, palavras);
-        } else {
-            return new Comando(null, palavras);
+        splitString.close();
+        if (!palavras.isEmpty()) {
+            return new Comando(palavras);
         }
-
+        return null;
     }
+
 }

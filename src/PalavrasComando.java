@@ -2,16 +2,11 @@ public class PalavrasComando {
 
     private String[] comandosValidos;
 
-    public PalavrasComando(String tipoDeAmbiente, int posicao) {
-        if (tipoDeAmbiente == "planeta") {
-            if (posicao == 1) { // posicao inicial
-                comandosValidos = new String[] { "explorar planeta", "entrar na nave", "quit", "ajuda" };
-            } else if (posicao == 2) { // posicao nao inicial
-                comandosValidos = new String[] { "explorar", "voltar para a nave", "quit", "ajuda" };
-            }
-        } else if (tipoDeAmbiente == "nave") {
-            comandosValidos = new String[] { "viajar para outro planeta", "quit", "ajuda" };
-        }
+    public PalavrasComando() {
+
+        comandosValidos = new String[] { "ir", "quit", "ajuda", "plantar", "dica", "viajar", "retornar", "saber" };
+        // ir remete a explorar o mundo em que a nave pousou e viajar e ir para outro
+        // mundo
     }
 
     public boolean ehComando(String umaString) {
@@ -23,11 +18,14 @@ public class PalavrasComando {
         return false;
     }
 
-    public String comandosValidos() {
+    public String getComandos() {
         String comandos = "";
+
         for (int i = 0; i < comandosValidos.length; i++) {
             comandos += comandosValidos[i] + " ";
         }
+
         return comandos;
+
     }
 }
