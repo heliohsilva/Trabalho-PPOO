@@ -3,7 +3,6 @@ import java.util.Random;
 
 public class Jogo {
     private Analisador analisador;
-    private Planeta planetaAtual;
     private ArrayList<Planeta> planetas;
     int posicao;
     Random random;
@@ -13,10 +12,8 @@ public class Jogo {
         criarPlanetas();// cria os Planetas
         random = new Random();
         posicao = random.nextInt(planetas.size()); // define um Planeta aleatorio para iniciar o jogo
-        planetaAtual = planetas.get(posicao);
         jogador = new Jogador();
-        jogador.setPlanetaAtual(planetaAtual);
-
+        jogador.setPlanetaAtual(planetas.get(posicao));
         analisador = new Analisador();
     }
 
@@ -68,13 +65,13 @@ public class Jogo {
                 case "ajuda":
                     imprimirAjuda();
                     break;
-                // case "retornar":
-                // jogador.voltarInicio();
-                // break;
-                // case "saber":
-                // jogador.saberPlaneta();
+                case "retornar":
+                    jogador.retornarNave();
+                    break;
+                case "saber":
+                    jogador.saberPlaneta();
                 case "dica":
-                    System.out.println(planetaAtual.getDescricao());
+                    System.out.println(jogador.getPlanetaAtual().getDescricao());
                     break;
                 default:
                     System.out.println("Comando invalido!");
@@ -103,11 +100,20 @@ public class Jogo {
     }
 
     private void imprimirAjuda() {
-        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela universidade.");
+        System.out.println(
+                "Voce esta em um planeta ou estrela desconhecido e precisa encontrar o planeta Terra para plantar a arvore da vida.");
+        System.out.println("o que voce sabe sobre este planeta e: " + jogador.getPlanetaAtual().getDescricao());
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
         System.out.println(analisador.getComandosAceitos());
+        System.out.println("\nir-> para explorar o planeta");
+        System.out.println("viajar-> para viajar para outro planeta");
+        System.out.println("plantar-> para plantar a arvore da vida");
+        System.out.println("dica-> para saber mais sobre o planeta");
+        System.out.println("retornar-> para voltar para a nave");
+        System.out.println("ajuda-> para ver os comandos aceitos");
+        System.out.println("quit-> para sair do jogo");
+        System.out.println("saber-> para saber em qual planeta voce esta(pagando um preco bem alto)");
 
     }
 
@@ -116,13 +122,13 @@ public class Jogo {
             System.out.println("comando: " + comando.getGatilho());
             System.out.println("destino: " + comando.getComplemento());
             if (comando.getComplemento().equals("sul")) {
-                planetaAtual.avancarCenario();
-                if (planetaAtual.getItem() != null) {
-                    verificarItem(planetaAtual.getItem());
+                jogador.getPlanetaAtual().avancarCenario();
+                if (jogador.getPlanetaAtual().getItem() != null) {
+                    verificarItem(jogador.getPlanetaAtual().getItem());
                 }
                 jogador.decrementarEnergia(1);
             } else if (comando.getComplemento().equals("norte")) {
-                planetaAtual.retrocederCenario();
+                jogador.getPlanetaAtual().retrocederCenario();
                 jogador.decrementarEnergia(1);
             } else {
                 System.out.println("destino invalido");
@@ -131,7 +137,7 @@ public class Jogo {
     }
 
     private void viajar(Comando comando) {
-        if (planetaAtual.getPosicao() != 0) {
+        if (jogador.getPlanetaAtual().getPosicao() != 0) {
             System.out.println("Voce precisa voltar para a nave antes de viajar");
         } else {
             if (comando.getComplemento() != null) {
@@ -141,8 +147,8 @@ public class Jogo {
                     int distancia = analisador.getDistanciaViagem();
 
                     if (jogador.getNave().getCombustivel() >= distancia) {
-                        jogador.viajar(distancia, planetas.get(planetaAtual.getPosicao() + 1));
-                        planetaAtual = planetas.get(planetaAtual.getPosicao() + 1);
+                        jogador.viajar(distancia, planetas.get(jogador.getPlanetaAtual().getPosicao() + distancia));
+
                     } else {
                         System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
                     }
@@ -150,8 +156,7 @@ public class Jogo {
                     int distancia = analisador.getDistanciaViagem();
 
                     if (jogador.getNave().getCombustivel() >= distancia) {
-                        jogador.viajar(distancia, planetas.get(planetaAtual.getPosicao() + 1));
-                        planetaAtual = planetas.get(planetaAtual.getPosicao() + 1);
+                        jogador.viajar(distancia, planetas.get(jogador.getPlanetaAtual().getPosicao() - distancia));
                     } else {
                         System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
                     }
@@ -159,7 +164,7 @@ public class Jogo {
                     System.out.println("direcao invalida");
                 }
 
-                System.out.println("planeta atual: " + planetaAtual.getDescricao());
+                System.out.println("planeta atual: " + jogador.getPlanetaAtual().getDescricao());
 
             } else {
                 System.out.println("destino invalido");
@@ -240,11 +245,11 @@ public class Jogo {
         System.out.println(pegarMensagemInicial());
         System.out.println();
 
-        System.out.println("planeta atual: " + planetaAtual.getDescricao());
+        System.out.println("planeta atual: " + jogador.getPlanetaAtual().getDescricao());
     }
 
     private void imprimirSaidas() {
-        ArrayList<String> saidas = planetaAtual.getSaida();
+        ArrayList<String> saidas = jogador.getPlanetaAtual().getSaida();
 
         for (String saida : saidas) {
             System.out.print(saida + " ");
