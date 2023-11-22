@@ -25,11 +25,11 @@ public class Jogador {
     }
 
     public boolean plantarArvore() {
-        plantasDeArvore--;
-
         if (planetaAtual.getNome() == "Terra") {
             return true;
         } else {
+            plantasDeArvore--;
+
             return false;
         }
     }
@@ -57,6 +57,14 @@ public class Jogador {
         resetEnergia();
 
         nave.decrementarCombustivel(combustivelGasto);
+        planetaAtual = planeta;
+    }
+
+    public Nave getNave() {
+        return nave;
+    }
+
+    public void setPlanetaAtual(Planeta planeta) {
         planetaAtual = planeta;
     }
 

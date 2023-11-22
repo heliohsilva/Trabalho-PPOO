@@ -15,12 +15,14 @@ public class Jogo {
         posicao = random.nextInt(planetas.size()); // define um Planeta aleatorio para iniciar o jogo
         planetaAtual = planetas.get(posicao);
         jogador = new Jogador();
-        analisador = new Analisador(planetaAtual.getTipo(), posicao);
+        jogador.setPlanetaAtual(planetaAtual);
+
+        analisador = new Analisador();
     }
 
     public void jogar() {
         imprimirBoasVindas();
-
+        imprimirSaidas();
         boolean terminado = false;
         while (!terminado) {
             Comando comando = analisador.pegarComando();
@@ -31,9 +33,47 @@ public class Jogo {
 
     private boolean processarComando(Comando comando) {
         boolean querSair = false;
+        String palavraGatilho = comando.getGatilho();
+        System.out.println("palavra de comando: " + palavraGatilho);
+
+        if (palavraGatilho.equals("quit")) {
+            querSair = true;
+        } else {
+            switch (palavraGatilho) {
+                case "plantar":
+                    if (jogador.plantarArvore()) {
+                        System.out.println("Parabens! Voce salvou a humanidade!");
+                        querSair = true;
+                    } else {
+                        System.out.println("Voce nao esta no planeta certo para plantar a arvore da vida");
+                        if (jogador.getPlantasDeArvore() > 0) {
+                            System.out.println(
+                                    "Voce ainda tem " + jogador.getPlantasDeArvore() + " arvores para plantar");
+                        } else {
+                            System.out.println("Voce nao tem mais arvores para plantar");
+                            querSair = true;
+                        }
+                    }
+                    break;
+                case "ir":
+                    explorarPlaneta(comando);
+                    break;
+                // case "nave":
+                // jogador.irParaNave();
+                // break;
+                case "ajuda":
+                    imprimirAjuda();
+                    break;
+                // case "voltarInicio":
+                // jogador.voltarInicio();
+                // break;
+                default:
+                    System.out.println("Comando invalido!");
+                    break;
+            }
+        }
         return querSair;
 
-        String palavraDeComando = comando.getPalavraDeComando();
     }
 
     private void imprimirAjuda() {
@@ -41,22 +81,40 @@ public class Jogo {
         System.out.println("pela universidade.");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
+        System.out.println(analisador.getComandosAceitos());
+
     }
 
-    private void irParaPlaneta(Comando comando) {
-        if (!comando.temSegundaPalavra()) {
-            System.out.println("Ir pra onde?");
-            return;
+    private void explorarPlaneta(Comando comando) {
+        if (comando.getComplemento() != null) {
+            if (comando.getComplemento().equals("sul")) {
+                planetaAtual.avancarCenario();
+                if (planetaAtual.getItem() != null) {
+                    verificarItem(planetaAtual.getItem());
+                }
+            } else if (comando.getComplemento().equals("norte")) {
+                planetaAtual.retrocederCenario();
+            } else {
+                System.out.println("destino invalido");
+            }
         }
     }
 
-    private boolean sair(Comando comando) {
-        if (comando.temSegundaPalavra()) {
-            System.out.println("Sair o que?");
-            return false;
-        } else {
-            return true;
+    private void viajar(Comando comando) {
+
+    }
+
+    public void verificarItem(String item) {
+        if (item == "java coffee") {
+            jogador.incrementarEnergia(20);
+        }
+        if (item == "rebimboca da parafuseta") {
+            if (jogador.getNave().getEstado() == false) {
+                jogador.getNave().consertar();
+            }
+        }
+        if (item == "combustivel") {
+            jogador.getNave().incrementarCombustivel(5);
         }
     }
 
@@ -110,23 +168,8 @@ public class Jogo {
     }
 
     private void imprimirBoasVindas() {
-        System.out.println();
-        System.out.println("Bem-vindo ao Fundacao Terra!");
-        System.out.println("Fundacao Terra eh um novo jogo de aventura incrivelmente chato.");
-        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
-        System.out.println(
-                "Muitos anos atras, antes mesmo da grande Colisao, a humanidade saia de seu planeta natal para explorar o espaço.");
-        System.out.println(
-                "Apos a Colisao, a humanidade se viu presa em uma nova super-galaxia hostil e desconhecida, com muitas de suas colonias sendo ameacadas constantemente");
-        System.out.println(
-                "As escritas antigas indicam que o berço da vida humana se encontra em um planeta azul rochoso com uma ou mais luas ao redor.");
-        System.out.println("Aquele e o unico lugar onde a arvore da vida pode ser plantada em toda a super-galaxia.");
-        System.out.println(
-                "Tudo indica que voce esta no sistema planetario certo. Agora voce precisa encontrar o planeta e garantir nossa existencia que depende da arvore da vida.");
-        System.out.println("Seu combustivel e escasso, entao voce precisa ser rapido e eficiente.");
-        System.out.println(
-                "Durante sua jornada, voce pode sofrer com tempestades solares, chuvas de asteroides ou ate mesmo com a falta de energia.");
-        System.out.println("Boa sorte!");
+
+        System.out.println(pegarMensagemInicial());
         System.out.println();
 
         System.out.println("planeta atual: " + planetaAtual.getDescricao());
@@ -140,5 +183,24 @@ public class Jogo {
         for (String saida : saidas) {
             System.out.print(saida + " ");
         }
+    }
+
+    private String pegarMensagemInicial() {
+        return ("Bem-vindo ao Fundacao Terra!\n" +
+                "Fundacao Terra eh um novo jogo de aventura incrivelmente chato.\n" +
+                "Digite 'ajuda' se voce precisar de ajuda.\n" +
+                "Muitos anos atras, antes mesmo da grande Colisao, a humanidade saia de seu planeta natal para explorar o espaço.\n"
+                +
+                "Apos a Colisao, a humanidade se viu presa em uma nova super-galaxia hostil e desconhecida, com muitas de suas colonias sendo ameacadas constantemente\n"
+                +
+                "As escritas antigas indicam que o berço da vida humana se encontra em um planeta azul rochoso com uma ou mais luas ao redor.\n"
+                +
+                "Aquele e o unico lugar onde a arvore da vida pode ser plantada em toda a super-galaxia.\n" +
+                "Tudo indica que voce esta no sistema planetario certo. Agora voce precisa encontrar o planeta e garantir nossa existencia que depende da arvore da vida.\n"
+                +
+                "Seu combustivel e escasso, entao voce precisa ser rapido e eficiente.\n" +
+                "Durante sua jornada, voce pode sofrer com tempestades solares, chuvas de asteroides ou ate mesmo com a falta de energia.\n"
+                +
+                "Boa sorte!\n");
     }
 }

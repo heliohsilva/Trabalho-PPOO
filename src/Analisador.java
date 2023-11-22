@@ -2,38 +2,39 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Analisador {
-    private PalavrasComando palavrasDeComando;
-    private Scanner entrada;
+    private PalavrasComando comandosAceitos;
+    private Scanner in;
 
-    String tipoDeAmbiente;
-    int posicao;
+    public Analisador() {
+        in = new Scanner(System.in);
+    }
 
-    public Analisador(String tipoDeAmbiente, int posicao) {
-        this.tipoDeAmbiente = tipoDeAmbiente;
-        this.posicao = posicao;
-        palavrasDeComando = new PalavrasComando(tipoDeAmbiente, posicao);
-        entrada = new Scanner(System.in);
+    public String getComandosAceitos() {
+        return comandosAceitos.getComandos();
     }
 
     public Comando pegarComando() {
-        String linha; // guardara toda a linha
-        ArrayList<String> palavras = new ArrayList<String>(); // guardara as palavras da linha
+        String linha;
 
-        System.out.print("> "); // imprime o prompt
+        System.out.print("> ");
+        linha = in.nextLine();
 
-        linha = entrada.nextLine(); // le a linha inteira
-        Scanner tokenizer = new Scanner(linha); // quebra a linha em palavras
-        while (tokenizer.hasNext()) {
-            palavras.add(tokenizer.next()); // adiciona cada palavra na lista
+        ArrayList<String> palavras = new ArrayList<String>();
+        Scanner splitString = new Scanner(linha);
+
+        if (splitString.hasNext()) {
+            palavras.add(splitString.next());
+
+            if (splitString.hasNext()) {
+                palavras.add(splitString.next());
+            }
         }
 
-        if (palavrasDeComando.ehComando(palavras.get(0)) == false) {
-            System.out.println("Comando invalido!");
-            return new Comando(null);
-        } else {
+        splitString.close();
+        if (!palavras.isEmpty()) {
             return new Comando(palavras);
         }
-
+        return null;
     }
 
 }

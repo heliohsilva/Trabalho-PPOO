@@ -7,25 +7,14 @@ public class Comando {
         this.comando = comando;
     }
 
-    public String getPalavraDeComando() {
+    public String getGatilho() {
         return comando.get(0);
     }
 
-    public String comandoRestante() {
-        String comandoRestante = "";
-
-        for (int i = 1; i < comando.size(); i++) {
-            comandoRestante += comando.get(i) + " ";
+    public String getComplemento() {
+        if (comando.size() > 1) {
+            return comando.get(1);
         }
-
-        return comandoRestante;
-    }
-
-    public boolean ehDesconhecido() {
-        return (getPalavraDeComando() == null);
-    }
-
-    public boolean temSegundaPalavra() {
-        return (comandoRestante() != null);
+        return null;
     }
 }

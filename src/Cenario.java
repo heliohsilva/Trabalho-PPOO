@@ -33,15 +33,15 @@ public class Cenario {
         }
     }
 
+    private boolean getTemItem() {
+        return temItem;
+    }
+
     public String getItem() {
-        if (temItem()) {
+        if (getTemItem()) {
             return item;
         }
         return null;
-    }
-
-    private boolean temItem() {
-        return temItem;
     }
 
     public ArrayList<String> getSaida() {

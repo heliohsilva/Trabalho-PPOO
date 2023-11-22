@@ -30,6 +30,18 @@ public class Planeta {
         return ambienteInterno.getCenarioAtual();
     }
 
+    public void avancarCenario() {
+        ambienteInterno.avancarCenario();
+    }
+
+    public void retrocederCenario() {
+        ambienteInterno.retrocederCenario();
+    }
+
+    public String getItem() {
+        return ambienteInterno.getItem();
+    }
+
     public ArrayList<String> getSaida() {
         return ambienteInterno.getSaida();
     }

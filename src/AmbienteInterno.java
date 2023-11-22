@@ -36,11 +36,24 @@ public class AmbienteInterno {
     }
 
     public void avancarCenario() {
-        cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) + 1);
+        if (cenarios.indexOf(cenarioAtual) < quantidadedeCenarios - 1) {
+            cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) + 1);
+        } else {
+            System.out.println("Nao ha mais cenarios a frente");
+        }
+
     }
 
     public void retrocederCenario() {
-        cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) - 1);
+        if (cenarios.indexOf(cenarioAtual) > 0) {
+            cenarioAtual = cenarios.get(cenarios.indexOf(cenarioAtual) - 1);
+        } else {
+            System.out.println("Nao ha mais cenarios anteriores");
+        }
+    }
+
+    public String getItem() {
+        return cenarioAtual.getItem();
     }
 
     public ArrayList<String> getSaida() {
