@@ -1,3 +1,9 @@
+/*
+ * 
+ * @author helio
+ * 
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,9 +32,9 @@ public class Jogo {
                     "============================================================================================================");
             System.out.printf("\nJogador -> Energia: " + jogador.getEnergia());
             System.out.printf("\nPlantas de arvore restantes: " + jogador.getPlantasDeArvore());
-            System.out.printf("\nNave:\nCombustivel: " + jogador.getNave().getCombustivel());
+            System.out.printf("\nNave -> Combustivel: " + jogador.getNave().getCombustivel());
 
-            System.out.print("\nSaidas: ");
+            System.out.print("\n\nSaidas: ");
             imprimirSaidas();
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
@@ -69,7 +75,7 @@ public class Jogo {
                     jogador.retornarNave();
                     break;
                 case "saber":
-                    jogador.saberPlaneta();
+                    saberPlaneta();
                 case "dica":
                     System.out.println(jogador.getPlanetaAtual().getDescricao());
                     break;
@@ -80,6 +86,13 @@ public class Jogo {
         }
         return querSair;
 
+    }
+
+    private void saberPlaneta() {
+        if (analisador.getSaberNomePlaneta().equals("sim")) {
+            jogador.decrementarCombustivel(3, 4);
+            System.out.println("Voce esta no planeta " + jogador.getPlanetaAtual().getNome());
+        }
     }
 
     private boolean plantar() {

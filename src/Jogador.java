@@ -1,3 +1,7 @@
+/*
+ * @author helio
+ */
+
 import java.util.Random;
 
 public class Jogador {
@@ -48,20 +52,6 @@ public class Jogador {
 
     public Planeta getPlanetaAtual() {
         return planetaAtual;
-    }
-
-    public void saberPlaneta() {
-        Analisador analisador = new Analisador();
-
-        String resposta = analisador.getSaberNomePlaneta();
-
-        if (resposta.equals("sim")) {
-            saberNomePlanetaAtual();
-        } else if (resposta.equals("nao")) {
-            System.out.println("resposta de um verdadeiro sabio");
-        } else {
-            System.out.println("resposta invalida");
-        }
     }
 
     public void usarItem(String item) {
@@ -129,15 +119,12 @@ public class Jogador {
         return nave;
     }
 
-    public void setPlanetaAtual(Planeta planeta) {
-        planetaAtual = planeta;
+    public void decrementarCombustivel(int numerador, int denominador) {
+        nave.decrementarCombustivel(numerador, denominador);
     }
 
-    public void saberNomePlanetaAtual() {// uma operacao bem cara que mostra para o jogador o nome do planeta atual pelo
-                                         // preco de 3/4 do combustivel da nave.
-        nave.decrementarCombustivel(3, 4);
-        System.out.println("Voce esta no planeta " + planetaAtual.getNome());
-
+    public void setPlanetaAtual(Planeta planeta) {
+        planetaAtual = planeta;
     }
 
 }

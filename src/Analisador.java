@@ -1,3 +1,9 @@
+/*
+ * 
+ * @author helio
+ * 
+ */
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -24,7 +30,7 @@ public class Analisador {
         String linha;
         String comandoValidos = comandosAceitos.getComandos();
 
-        System.out.print("\nComandos validos: ");
+        System.out.print("\n\n\nComandos validos: ");
 
         for (String comando : comandoValidos.split(" ")) {
             System.out.print(comando + " | ");

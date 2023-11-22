@@ -1,3 +1,8 @@
+/*
+ * 
+ * @author helio
+ */
+
 public class PalavrasComando {
 
     private String[] comandosValidos;

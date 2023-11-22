@@ -1,3 +1,7 @@
+
+/*
+ * @author helio
+ */
 public class Nave {
     private int combustivel; // usada para viajar entre planetas.
     private boolean estado;
@@ -16,7 +20,7 @@ public class Nave {
     }
 
     public void decrementarCombustivel(int numerador, int denominador) {
-        combustivel -= combustivel * Math.floor(numerador / denominador);
+        combustivel -= (int) Math.floor(combustivel * (numerador / denominador));
     }
 
     public int getCombustivel() {
