@@ -20,11 +20,6 @@ public class Analisador {
         return in.nextLine();
     }
 
-    public int getDistanciaViagem() {
-        System.out.print("\nQuantos planetas deseja viajar? ");
-        return in.nextInt();
-    }
-
     public Comando pegarComando() {
         String linha;
         String comandoValidos = comandosAceitos.getComandos();
@@ -47,6 +42,10 @@ public class Analisador {
 
             if (splitString.hasNext()) {
                 palavras.add(splitString.next());
+
+                if (palavras.get(0).equals("viajar") && splitString.hasNextInt()) {
+                    palavras.add(splitString.next());
+                }
             }
         }
 

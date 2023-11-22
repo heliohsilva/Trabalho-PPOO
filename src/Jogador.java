@@ -81,6 +81,7 @@ public class Jogador {
 
     public void viajar(int combustivelGasto, Planeta planeta) {
         resetEnergia();
+        setPlanetaAtual(planeta);
         nave.decrementarCombustivel(combustivelGasto);
         int chanceDeDesafio = rand.nextInt(3);
 
@@ -115,7 +116,6 @@ public class Jogador {
             }
         }
 
-        planetaAtual = planeta;
     }
 
     public void retornarNave() {
