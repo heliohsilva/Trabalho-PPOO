@@ -22,9 +22,11 @@ public class Jogo {
 
     public void jogar() {
         imprimirBoasVindas();
-        imprimirSaidas();
+
         boolean terminado = false;
         while (!terminado) {
+            System.out.print("\nSaidas: ");
+            imprimirSaidas();
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
@@ -32,6 +34,12 @@ public class Jogo {
     }
 
     private boolean processarComando(Comando comando) {
+
+        if (comando == null) {
+            System.out.println("Comando invalido!");
+            return false;
+        }
+
         boolean querSair = false;
         String palavraGatilho = comando.getGatilho();
         System.out.println("palavra de comando: " + palavraGatilho);
@@ -41,32 +49,27 @@ public class Jogo {
         } else {
             switch (palavraGatilho) {
                 case "plantar":
-                    if (jogador.plantarArvore()) {
-                        System.out.println("Parabens! Voce salvou a humanidade!");
+                    if (plantar()) {
                         querSair = true;
-                    } else {
-                        System.out.println("Voce nao esta no planeta certo para plantar a arvore da vida");
-                        if (jogador.getPlantasDeArvore() > 0) {
-                            System.out.println(
-                                    "Voce ainda tem " + jogador.getPlantasDeArvore() + " arvores para plantar");
-                        } else {
-                            System.out.println("Voce nao tem mais arvores para plantar");
-                            querSair = true;
-                        }
                     }
                     break;
                 case "ir":
                     explorarPlaneta(comando);
                     break;
-                // case "nave":
-                // jogador.irParaNave();
-                // break;
+                case "viajar":
+                    viajar(comando);
+                    break;
                 case "ajuda":
                     imprimirAjuda();
                     break;
-                // case "voltarInicio":
+                // case "retornar":
                 // jogador.voltarInicio();
                 // break;
+                // case "saber":
+                // jogador.saberPlaneta();
+                case "dica":
+                    System.out.println(planetaAtual.getDescricao());
+                    break;
                 default:
                     System.out.println("Comando invalido!");
                     break;
@@ -74,6 +77,23 @@ public class Jogo {
         }
         return querSair;
 
+    }
+
+    private boolean plantar() {
+        if (jogador.plantarArvore()) {
+            System.out.println("Parabens! Voce salvou a humanidade!");
+            return true;
+        } else {
+            System.out.println("Voce nao esta no planeta certo para plantar a arvore da vida");
+            if (jogador.getPlantasDeArvore() > 0) {
+                System.out.println(
+                        "Voce ainda tem " + jogador.getPlantasDeArvore() + " arvores para plantar");
+            } else {
+                System.out.println("Voce nao tem mais arvores para plantar");
+                return true;
+            }
+        }
+        return false;
     }
 
     private void imprimirAjuda() {
@@ -87,13 +107,17 @@ public class Jogo {
 
     private void explorarPlaneta(Comando comando) {
         if (comando.getComplemento() != null) {
+            System.out.println("comando: " + comando.getGatilho());
+            System.out.println("destino: " + comando.getComplemento());
             if (comando.getComplemento().equals("sul")) {
                 planetaAtual.avancarCenario();
                 if (planetaAtual.getItem() != null) {
                     verificarItem(planetaAtual.getItem());
                 }
+                jogador.decrementarEnergia(1);
             } else if (comando.getComplemento().equals("norte")) {
                 planetaAtual.retrocederCenario();
+                jogador.decrementarEnergia(1);
             } else {
                 System.out.println("destino invalido");
             }
@@ -101,20 +125,58 @@ public class Jogo {
     }
 
     private void viajar(Comando comando) {
+        if (planetaAtual.getPosicao() != 0) {
+            System.out.println("Voce precisa voltar para a nave antes de viajar");
+        } else {
+            if (comando.getComplemento() != null) {
+                System.out.println("comando: " + comando.getGatilho());
+                System.out.println("destino: " + comando.getComplemento());
+                if (comando.getComplemento().equals("direita")) {
+                    int distancia = analisador.getDistanciaViagem();
 
+                    if (jogador.getNave().getCombustivel() >= distancia) {
+                        jogador.viajar(distancia, planetas.get(planetaAtual.getPosicao() + 1));
+                        planetaAtual = planetas.get(planetaAtual.getPosicao() + 1);
+                    } else {
+                        System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
+                    }
+                } else if (comando.getComplemento().equals("esquerda")) {
+                    int distancia = analisador.getDistanciaViagem();
+
+                    if (jogador.getNave().getCombustivel() >= distancia) {
+                        jogador.viajar(distancia, planetas.get(planetaAtual.getPosicao() + 1));
+                        planetaAtual = planetas.get(planetaAtual.getPosicao() + 1);
+                    } else {
+                        System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
+                    }
+                } else {
+                    System.out.println("direcao invalida");
+                }
+
+                System.out.println("planeta atual: " + planetaAtual.getDescricao());
+
+            } else {
+                System.out.println("destino invalido");
+            }
+
+        }
     }
 
     public void verificarItem(String item) {
+        System.out.println("Voce encontrou um " + item + "!");
         if (item == "java coffee") {
             jogador.incrementarEnergia(20);
+            System.out.println("Voce recuperou 20 pontos de energia");
         }
         if (item == "rebimboca da parafuseta") {
             if (jogador.getNave().getEstado() == false) {
                 jogador.getNave().consertar();
+                System.out.println("Voce consertou a nave");
             }
         }
         if (item == "combustivel") {
             jogador.getNave().incrementarCombustivel(5);
+            System.out.println("Voce recuperou 5 pontos de combustivel");
         }
     }
 
@@ -173,8 +235,6 @@ public class Jogo {
         System.out.println();
 
         System.out.println("planeta atual: " + planetaAtual.getDescricao());
-
-        System.out.print("Saidas: ");
     }
 
     private void imprimirSaidas() {

@@ -4,7 +4,7 @@ public class PalavrasComando {
 
     public PalavrasComando() {
 
-        comandosValidos = new String[] { "ir", "quit", "ajuda", "plantar", "pegar", "dica", "viajar", "retornar" };
+        comandosValidos = new String[] { "ir", "quit", "ajuda", "plantar", "dica", "viajar", "retornar", "saber" };
         // ir remete a explorar o mundo em que a nave pousou e viajar e ir para outro
         // mundo
     }

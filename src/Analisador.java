@@ -7,16 +7,30 @@ public class Analisador {
 
     public Analisador() {
         in = new Scanner(System.in);
+        comandosAceitos = new PalavrasComando();
     }
 
     public String getComandosAceitos() {
         return comandosAceitos.getComandos();
     }
 
+    public int getDistanciaViagem() {
+        System.out.print("\nQuantos planetas deseja viajar? ");
+        return in.nextInt();
+    }
+
     public Comando pegarComando() {
         String linha;
+        String comandoValidos = comandosAceitos.getComandos();
 
-        System.out.print("> ");
+        System.out.print("\nComandos validos: ");
+
+        for (String comando : comandoValidos.split(" ")) {
+            System.out.print(comando + " | ");
+        }
+
+        System.out.print("\n\n> ");
+
         linha = in.nextLine();
 
         ArrayList<String> palavras = new ArrayList<String>();

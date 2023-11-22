@@ -5,6 +5,7 @@ public class Cenario {
     private ArrayList<String> saida;
     private boolean temItem;
     private String item;
+    private int sorteioItem;
     private Random rand;
     private boolean first;
     private boolean last;
@@ -25,7 +26,11 @@ public class Cenario {
         }
 
         rand = new Random();
-        temItem = rand.nextBoolean();
+        sorteioItem = rand.nextInt(10);
+
+        if (sorteioItem < 3) {
+            temItem = true;
+        }
 
         if (temItem) {
             String[] itens = { "java coffee", "rebimboca da parafuseta", "combustivel" };
