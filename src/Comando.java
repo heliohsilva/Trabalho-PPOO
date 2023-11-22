@@ -1,3 +1,7 @@
+/*
+ * @author helio
+ */
+
 import java.util.ArrayList;
 
 public class Comando {
@@ -16,5 +20,12 @@ public class Comando {
             return comando.get(1);
         }
         return null;
+    }
+
+    public int getDistancia() {
+        if (comando.size() > 2) {
+            return Integer.parseInt(comando.get(2));
+        }
+        return 0;
     }
 }

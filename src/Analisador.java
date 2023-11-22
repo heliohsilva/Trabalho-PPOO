@@ -1,3 +1,9 @@
+/*
+ * 
+ * @author helio
+ * 
+ */
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -20,16 +26,11 @@ public class Analisador {
         return in.nextLine();
     }
 
-    public int getDistanciaViagem() {
-        System.out.print("\nQuantos planetas deseja viajar? ");
-        return in.nextInt();
-    }
-
     public Comando pegarComando() {
         String linha;
         String comandoValidos = comandosAceitos.getComandos();
 
-        System.out.print("\nComandos validos: ");
+        System.out.print("\n\n\nComandos validos: ");
 
         for (String comando : comandoValidos.split(" ")) {
             System.out.print(comando + " | ");
@@ -47,6 +48,10 @@ public class Analisador {
 
             if (splitString.hasNext()) {
                 palavras.add(splitString.next());
+
+                if (palavras.get(0).equals("viajar") && splitString.hasNextInt()) {
+                    palavras.add(splitString.next());
+                }
             }
         }
 

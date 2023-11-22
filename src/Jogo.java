@@ -1,3 +1,9 @@
+/*
+ * 
+ * @author helio
+ * 
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,11 +30,11 @@ public class Jogo {
         while (!terminado) {
             System.out.printf("\n\n%50s\n",
                     "============================================================================================================");
-            System.out.println("\nJogador:\nEnergia: " + jogador.getEnergia());
-            System.out.println("\nPlantas de arvore restantes: " + jogador.getPlantasDeArvore());
-            System.out.println("\nNave:\nCombustivel: " + jogador.getNave().getCombustivel());
+            System.out.printf("\nJogador -> Energia: " + jogador.getEnergia());
+            System.out.printf("\nPlantas de arvore restantes: " + jogador.getPlantasDeArvore());
+            System.out.printf("\nNave -> Combustivel: " + jogador.getNave().getCombustivel());
 
-            System.out.print("\nSaidas: ");
+            System.out.print("\n\nSaidas: ");
             imprimirSaidas();
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
@@ -69,7 +75,7 @@ public class Jogo {
                     jogador.retornarNave();
                     break;
                 case "saber":
-                    jogador.saberPlaneta();
+                    saberPlaneta();
                 case "dica":
                     System.out.println(jogador.getPlanetaAtual().getDescricao());
                     break;
@@ -80,6 +86,13 @@ public class Jogo {
         }
         return querSair;
 
+    }
+
+    private void saberPlaneta() {
+        if (analisador.getSaberNomePlaneta().equals("sim")) {
+            jogador.decrementarCombustivel(3, 4);
+            System.out.println("Voce esta no planeta " + jogador.getPlanetaAtual().getNome());
+        }
     }
 
     private boolean plantar() {
@@ -136,41 +149,48 @@ public class Jogo {
         }
     }
 
-    private void viajar(Comando comando) {
+    private boolean viajar(Comando comando) {
         if (jogador.getPlanetaAtual().getPosicao() != 0) {
             System.out.println("Voce precisa voltar para a nave antes de viajar");
         } else {
             if (comando.getComplemento() != null) {
+                char operador;
                 System.out.println("comando: " + comando.getGatilho());
                 System.out.println("destino: " + comando.getComplemento());
-                if (comando.getComplemento().equals("direita")) {
-                    int distancia = analisador.getDistanciaViagem();
-
-                    if (jogador.getNave().getCombustivel() >= distancia) {
-                        jogador.viajar(distancia, planetas.get(jogador.getPlanetaAtual().getPosicao() + distancia));
-
-                    } else {
-                        System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
-                    }
-                } else if (comando.getComplemento().equals("esquerda")) {
-                    int distancia = analisador.getDistanciaViagem();
-
-                    if (jogador.getNave().getCombustivel() >= distancia) {
-                        jogador.viajar(distancia, planetas.get(jogador.getPlanetaAtual().getPosicao() - distancia));
-                    } else {
-                        System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
-                    }
-                } else {
+                if (comando.getComplemento().equals("esquerda")) {
+                    operador = '-';
+                } else if (comando.getComplemento().equals("direita")) {
+                    operador = '+';
+                } else { // verifica se a direcao e valida
                     System.out.println("direcao invalida");
+                    return false;
                 }
 
-                System.out.println("planeta atual: " + jogador.getPlanetaAtual().getDescricao());
+                int distancia = comando.getDistancia();
+
+                if (jogador.getNave().getCombustivel() < distancia) { // verifica se o jogador tem combustivel
+                    System.out.println("Voce nao tem combustivel suficiente para viajar essa distancia");
+                    return false;
+                }
+
+                if (operador == '+' && (planetas.indexOf(jogador.getPlanetaAtual()) + distancia) < planetas.size()) {
+                    // verifica se o jogador nao vai ultrapassar o limite do array
+
+                    jogador.viajar(distancia, planetas.get(planetas.indexOf(jogador.getPlanetaAtual()) + distancia));
+                    return true;
+                }
+                if (operador == '-' && (planetas.indexOf(jogador.getPlanetaAtual()) - distancia) >= 0) {
+                    // verifica se o jogador nao vai ultrapassar o limite do array
+
+                    jogador.viajar(distancia, planetas.get(planetas.indexOf(jogador.getPlanetaAtual()) - distancia));
+                    return true;
+                }
 
             } else {
                 System.out.println("destino invalido");
             }
-
         }
+        return false;
     }
 
     public void verificarItem(String item) {
@@ -238,6 +258,7 @@ public class Jogo {
         planetas.add(urano);
         planetas.add(netuno);
         planetas.add(plutao);
+
     }
 
     private void imprimirBoasVindas() {
