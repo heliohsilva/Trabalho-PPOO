@@ -16,6 +16,10 @@ public class Jogador {
         rand = new Random();
     }
 
+    public int getEnergia() {
+        return energia;
+    }
+
     public void resetEnergia() {
         energia = 100;
     }

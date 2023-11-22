@@ -25,6 +25,12 @@ public class Jogo {
 
         boolean terminado = false;
         while (!terminado) {
+            System.out.printf("\n\n%50s\n",
+                    "============================================================================================================");
+            System.out.println("\nJogador:\nEnergia: " + jogador.getEnergia());
+            System.out.println("\nPlantas de arvore restantes: " + jogador.getPlantasDeArvore());
+            System.out.println("\nNave:\nCombustivel: " + jogador.getNave().getCombustivel());
+
             System.out.print("\nSaidas: ");
             imprimirSaidas();
             Comando comando = analisador.pegarComando();
@@ -247,20 +253,20 @@ public class Jogo {
 
     private String pegarMensagemInicial() {
         return ("Bem-vindo ao Fundacao Terra!\n" +
-                "Fundacao Terra eh um novo jogo de aventura incrivelmente chato.\n" +
-                "Digite 'ajuda' se voce precisar de ajuda.\n" +
-                "Muitos anos atras, antes mesmo da grande Colisao, a humanidade saia de seu planeta natal para explorar o espaço.\n"
+                "\nFundacao Terra eh um novo jogo de aventura incrivelmente chato.\n" +
+                "\nDigite 'ajuda' se voce precisar de ajuda.\n" +
+                "\nMuitos anos atras, antes mesmo da grande Colisao, a humanidade saia de seu planeta natal para explorar o espaço.\n"
                 +
-                "Apos a Colisao, a humanidade se viu presa em uma nova super-galaxia hostil e desconhecida, com muitas de suas colonias sendo ameacadas constantemente\n"
+                "\nApos a Colisao, a humanidade se viu presa em uma nova super-galaxia hostil e desconhecida, com muitas de suas colonias sendo ameacadas constantemente\n"
                 +
-                "As escritas antigas indicam que o berço da vida humana se encontra em um planeta azul rochoso com uma ou mais luas ao redor.\n"
+                "\nAs escritas antigas indicam que o berço da vida humana se encontra em um planeta azul rochoso com uma ou mais luas ao redor.\n"
                 +
-                "Aquele e o unico lugar onde a arvore da vida pode ser plantada em toda a super-galaxia.\n" +
-                "Tudo indica que voce esta no sistema planetario certo. Agora voce precisa encontrar o planeta e garantir nossa existencia que depende da arvore da vida.\n"
+                "\nAquele e o unico lugar onde a arvore da vida pode ser plantada em toda a super-galaxia.\n" +
+                "\nTudo indica que voce esta no sistema planetario certo. Agora voce precisa encontrar o planeta e garantir nossa existencia que depende da arvore da vida.\n"
                 +
-                "Seu combustivel e escasso, entao voce precisa ser rapido e eficiente.\n" +
-                "Durante sua jornada, voce pode sofrer com tempestades solares, chuvas de asteroides ou ate mesmo com a falta de energia.\n"
+                "\nSeu combustivel e escasso, entao voce precisa ser rapido e eficiente.\n" +
+                "\nDurante sua jornada, voce pode sofrer com tempestades solares, chuvas de asteroides ou ate mesmo com a falta de energia.\n"
                 +
-                "Boa sorte!\n");
+                "\nBoa sorte!\n");
     }
 }
