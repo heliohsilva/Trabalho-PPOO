@@ -16,6 +16,10 @@ public class Jogador {
         rand = new Random();
     }
 
+    public int getEnergia() {
+        return energia;
+    }
+
     public void resetEnergia() {
         energia = 100;
     }
@@ -42,13 +46,31 @@ public class Jogador {
         return plantasDeArvore;
     }
 
+    public Planeta getPlanetaAtual() {
+        return planetaAtual;
+    }
+
+    public void saberPlaneta() {
+        Analisador analisador = new Analisador();
+
+        String resposta = analisador.getSaberNomePlaneta();
+
+        if (resposta.equals("sim")) {
+            saberNomePlanetaAtual();
+        } else if (resposta.equals("nao")) {
+            System.out.println("resposta de um verdadeiro sabio");
+        } else {
+            System.out.println("resposta invalida");
+        }
+    }
+
     public void usarItem(String item) {
         if (item == "java coffee") {
             incrementarEnergia(20);
 
         }
         if (item == "rebimboca da parafuseta") {
-            if (nave.getEstado() == false) {
+            if (!nave.getEstado()) {
                 nave.consertar();
             }
         }
@@ -60,7 +82,7 @@ public class Jogador {
     public void viajar(int combustivelGasto, Planeta planeta) {
         resetEnergia();
         nave.decrementarCombustivel(combustivelGasto);
-        int chanceDeDesafio = rand.nextInt(5);
+        int chanceDeDesafio = rand.nextInt(3);
 
         if (chanceDeDesafio == 0) {
             String[] desafios = { "tempestade solar", "chuva de asteroides", "buraco negro" };
@@ -96,6 +118,13 @@ public class Jogador {
         planetaAtual = planeta;
     }
 
+    public void retornarNave() {
+        while (planetaAtual.getPosicao() != 0) {
+            planetaAtual.retrocederCenario();
+            decrementarEnergia(1);
+        }
+    }
+
     public Nave getNave() {
         return nave;
     }
@@ -106,9 +135,9 @@ public class Jogador {
 
     public void saberNomePlanetaAtual() {// uma operacao bem cara que mostra para o jogador o nome do planeta atual pelo
                                          // preco de 3/4 do combustivel da nave.
+        nave.decrementarCombustivel(3, 4);
         System.out.println("Voce esta no planeta " + planetaAtual.getNome());
 
-        nave.decrementarCombustivel(3, 4);
     }
 
 }

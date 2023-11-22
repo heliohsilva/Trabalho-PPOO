@@ -14,6 +14,12 @@ public class Analisador {
         return comandosAceitos.getComandos();
     }
 
+    public String getSaberNomePlaneta() {
+        System.out.print(
+                "voce tem certeza de que quer saber o nome do planeta atual? isso vai custar 3/4 do seu combustivel? ");
+        return in.nextLine();
+    }
+
     public int getDistanciaViagem() {
         System.out.print("\nQuantos planetas deseja viajar? ");
         return in.nextInt();
