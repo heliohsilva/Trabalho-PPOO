@@ -8,7 +8,7 @@ public class Jogador {
     private String[] itens;
     private int plantasDeArvore;
     private int energia; // usada para explorar planetas. resetada sempre que o jogador viaja
-    private Planeta planetaAtual;
+    private CorpoCeleste planetaAtual;
     private Nave nave;
     private Random rand;
 
@@ -50,7 +50,7 @@ public class Jogador {
         return plantasDeArvore;
     }
 
-    public Planeta getPlanetaAtual() {
+    public CorpoCeleste getPlanetaAtual() {
         return planetaAtual;
     }
 
@@ -69,7 +69,7 @@ public class Jogador {
         }
     }
 
-    public void viajar(int combustivelGasto, Planeta planeta) {
+    public void viajar(int combustivelGasto, CorpoCeleste planeta) {
         resetEnergia();
         setPlanetaAtual(planeta);
         nave.decrementarCombustivel(combustivelGasto);
@@ -119,7 +119,7 @@ public class Jogador {
         return nave;
     }
 
-    public void setPlanetaAtual(Planeta planeta) {
+    public void setPlanetaAtual(CorpoCeleste planeta) {
         planetaAtual = planeta;
     }
 
