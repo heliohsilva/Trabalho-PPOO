@@ -4,7 +4,7 @@
 
 import java.util.ArrayList;
 
-public class Planeta {
+public class Planeta extends CorpoCeleste {
     private String nome;
     private String tipo; // planeta ou lua
     private String descricao;
@@ -31,22 +31,11 @@ public class Planeta {
     }
 
     public int getPosicao() {
-        return ambienteInterno.getCenarioAtual();
+        return ambienteInterno.getIndexofCenarioAtual();
     }
 
-    public void avancarCenario() {
-        ambienteInterno.avancarCenario();
+    public AmbienteInterno getAmbiente() {
+        return ambienteInterno;
     }
 
-    public void retrocederCenario() {
-        ambienteInterno.retrocederCenario();
-    }
-
-    public String getItem() {
-        return ambienteInterno.getItem();
-    }
-
-    public ArrayList<String> getSaida() {
-        return ambienteInterno.getSaida();
-    }
 }

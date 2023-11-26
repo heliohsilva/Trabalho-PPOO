@@ -110,17 +110,13 @@ public class Jogador {
 
     public void retornarNave() {
         while (planetaAtual.getPosicao() != 0) {
-            planetaAtual.retrocederCenario();
+            planetaAtual.getAmbiente().retrocederCenario();
             decrementarEnergia(1);
         }
     }
 
     public Nave getNave() {
         return nave;
-    }
-
-    public void decrementarCombustivel(int numerador, int denominador) {
-        nave.decrementarCombustivel(numerador, denominador);
     }
 
     public void setPlanetaAtual(Planeta planeta) {

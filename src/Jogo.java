@@ -90,7 +90,7 @@ public class Jogo {
 
     private void saberPlaneta() {
         if (analisador.getSaberNomePlaneta().equals("sim")) {
-            jogador.decrementarCombustivel(3, 4);
+            jogador.getNave().decrementarCombustivel(3, 4);
             System.out.println("Voce esta no planeta " + jogador.getPlanetaAtual().getNome());
         }
     }
@@ -135,13 +135,13 @@ public class Jogo {
             System.out.println("comando: " + comando.getGatilho());
             System.out.println("destino: " + comando.getComplemento());
             if (comando.getComplemento().equals("sul")) {
-                jogador.getPlanetaAtual().avancarCenario();
-                if (jogador.getPlanetaAtual().getItem() != null) {
-                    verificarItem(jogador.getPlanetaAtual().getItem());
+                jogador.getPlanetaAtual().getAmbiente().avancarCenario();
+                if (jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getItem() != null) {
+                    verificarItem(jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getItem());
                 }
                 jogador.decrementarEnergia(1);
             } else if (comando.getComplemento().equals("norte")) {
-                jogador.getPlanetaAtual().retrocederCenario();
+                jogador.getPlanetaAtual().getAmbiente().retrocederCenario();
                 jogador.decrementarEnergia(1);
             } else {
                 System.out.println("destino invalido");
@@ -270,7 +270,7 @@ public class Jogo {
     }
 
     private void imprimirSaidas() {
-        ArrayList<String> saidas = jogador.getPlanetaAtual().getSaida();
+        ArrayList<String> saidas = jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getSaida();
 
         for (String saida : saidas) {
             System.out.print(saida + " ");

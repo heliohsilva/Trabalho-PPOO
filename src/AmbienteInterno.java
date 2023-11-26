@@ -33,9 +33,13 @@ public class AmbienteInterno {
         cenarioAtual = cenarios.get(0);
     }
 
-    public int getCenarioAtual() {
-        return cenarios.indexOf(cenarioAtual);
+    public Cenario getCenarioAtual() {
+        return cenarioAtual;
 
+    }
+
+    public int getIndexofCenarioAtual() {
+        return cenarios.indexOf(cenarioAtual);
     }
 
     public void avancarCenario() {
@@ -53,14 +57,6 @@ public class AmbienteInterno {
         } else {
             System.out.println("Nao ha mais cenarios anteriores");
         }
-    }
-
-    public String getItem() {
-        return cenarioAtual.getItem();
-    }
-
-    public ArrayList<String> getSaida() {
-        return cenarioAtual.getSaida();
     }
 
 }
