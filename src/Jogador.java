@@ -3,9 +3,10 @@
  */
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class Jogador {
-    private String[] itens;
+    private Inventario mochila; // fernando
     private int plantasDeArvore;
     private int energia; // usada para explorar planetas. resetada sempre que o jogador viaja
     private CorpoCeleste planetaAtual;
@@ -13,7 +14,7 @@ public class Jogador {
     private Random rand;
 
     public Jogador() {
-        itens = new String[3];
+        mochila = new Inventario(); // fernando
         energia = 100;
         plantasDeArvore = 3;
         nave = new Nave();
@@ -36,16 +37,6 @@ public class Jogador {
         energia -= decremento;
     }
 
-    public boolean plantarArvore() {
-        if (planetaAtual.getNome() == "Terra") {
-            return true;
-        } else {
-            plantasDeArvore--;
-
-            return false;
-        }
-    }
-
     public int getPlantasDeArvore() {
         return plantasDeArvore;
     }
@@ -54,18 +45,21 @@ public class Jogador {
         return planetaAtual;
     }
 
-    public void usarItem(String item) {
-        if (item == "java coffee") {
-            incrementarEnergia(20);
+    public Nave getNave() {
+        return nave;
+    }
 
-        }
-        if (item == "rebimboca da parafuseta") {
-            if (!nave.getEstado()) {
-                nave.consertar();
-            }
-        }
-        if (item == "combustivel") {
-            nave.incrementarCombustivel(5);
+    public void setPlanetaAtual(CorpoCeleste planeta) {
+        planetaAtual = planeta;
+    }
+
+    public boolean plantarArvore() {
+        if (planetaAtual.getNome() == "Terra") {
+            return true;
+        } else {
+            plantasDeArvore--;
+
+            return false;
         }
     }
 
@@ -115,12 +109,40 @@ public class Jogador {
         }
     }
 
-    public Nave getNave() {
-        return nave;
+    public void pegarItem() { // Fernando: adicionei esse método 
+        if (planetaAtual.getAmbiente().getCenarioAtual().getTemItem() == true) { // Se o cenario atual tiver um item
+            String nomeItem = planetaAtual.getAmbiente().getCenarioAtual().getItem();
+            planetaAtual.getAmbiente().getCenarioAtual().removeItem(); // O item é retirado do cenario 
+            mochila.adicionarItem(nomeItem);
+        }
+    } 
+
+    public void verificarMochila() { // Fernando
+        mochila.listarItens();
     }
 
-    public void setPlanetaAtual(CorpoCeleste planeta) {
-        planetaAtual = planeta;
-    }
+    public void usarItem(String item) { // Fernando
+        System.out.println("Verifique os itens disponiveis para uso");
+        verificarMochila();
+        System.out.println("Insira o item que deseja usar: ")
+        Scanner scn = new Scanner(System.in);
+        String entrada = scn.nextLine();
 
+        if (mochila.verificarItem(entrada)) {
+            if (entrada == "java coffee") {
+                incrementarEnergia(20);
+                mochila.removerItem(entrada);
+            }
+            if (entrada == "rebimboca da parafuseta") {
+                if (!nave.getEstado()) {
+                    nave.consertar();
+                    mochila.removerItem(entrada);
+                }
+            }
+            if (entrada == "combustivel") {
+                nave.incrementarCombustivel(5);
+                mochila.removerItem(entrada);
+            }
+        }
+    }
 }

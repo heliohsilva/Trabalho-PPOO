@@ -42,7 +42,7 @@ public class Cenario {
         }
     }
 
-    private boolean getTemItem() {
+    public boolean getTemItem() { // Fernando: mudei pra public 
         return temItem;
     }
 
@@ -51,6 +51,13 @@ public class Cenario {
             return item;
         }
         return null;
+    }
+
+    public void removeItem() { // Fernando: função para caso o item tenha sido pego do cenário atual 
+        if (getTemItem()) {
+            temItem = false; 
+            item = null; 
+        }
     }
 
     public ArrayList<String> getSaida() {
