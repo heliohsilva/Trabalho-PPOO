@@ -13,6 +13,7 @@ public class Jogo {
     int posicao;
     Random random;
     Jogador jogador;
+    String log;
 
     public Jogo() {
         criarPlanetas();// cria os Planetas
@@ -21,25 +22,30 @@ public class Jogo {
         jogador = new Jogador();
         jogador.setPlanetaAtual(planetas.get(posicao));
         analisador = new Analisador();
+        log = "";
     }
 
     public void jogar() {
         imprimirBoasVindas();
 
         boolean terminado = false;
-        while (!terminado) {
-            System.out.printf("\n\n%50s\n",
-                    "============================================================================================================");
-            System.out.printf("\nJogador -> Energia: " + jogador.getEnergia());
-            System.out.printf("\nPlantas de arvore restantes: " + jogador.getPlantasDeArvore());
-            System.out.printf("\nNave -> Combustivel: " + jogador.getNave().getCombustivel());
 
-            System.out.print("\n\nSaidas: ");
+        while (!terminado) {
+            String imprimir = ("==============================================================================================\n"
+                    + "Planeta: " + jogador.getPlanetaAtual().getDescricao() + "\n" + "Energia: " + jogador.getEnergia()
+                    + "\n" + "Plantas de arvore: " + jogador.getPlantasDeArvore() + "\n" + "Nave: "
+                    + "\n"
+                    + "Combustivel: " + jogador.getNave().getCombustivel() + "\n"
+                    + "==============================================================================================\n"
+                    + "Saidas: ");
+            System.out.printf(imprimir);
+            log += imprimir;
             imprimirSaidas();
             Comando comando = analisador.pegarComando();
             terminado = processarComando(comando);
         }
         System.out.println("Obrigado por jogar. Ate mais!");
+        imprimirLog();
     }
 
     private boolean processarComando(Comando comando) {
@@ -264,9 +270,12 @@ public class Jogo {
     private void imprimirBoasVindas() {
 
         System.out.println(pegarMensagemInicial());
+        log += pegarMensagemInicial();
         System.out.println();
+        String boasVindas = "planeta atual: " + jogador.getPlanetaAtual().getDescricao();
+        System.out.println(boasVindas);
+        log += boasVindas;
 
-        System.out.println("planeta atual: " + jogador.getPlanetaAtual().getDescricao());
     }
 
     private void imprimirSaidas() {
@@ -274,7 +283,13 @@ public class Jogo {
 
         for (String saida : saidas) {
             System.out.print(saida + " ");
+            log += saida + " ";
         }
+    }
+
+    private void imprimirLog() {
+        Arquivo log = new Arquivo(this.log);
+        log.escrever();
     }
 
     private String pegarMensagemInicial() {

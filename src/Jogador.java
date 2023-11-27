@@ -14,7 +14,7 @@ public class Jogador {
 
     public Jogador() {
         itens = new String[3];
-        energia = 100;
+        energia = 20;
         plantasDeArvore = 3;
         nave = new Nave();
         rand = new Random();
