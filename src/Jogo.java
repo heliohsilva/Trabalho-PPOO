@@ -31,7 +31,7 @@ public class Jogo {
         boolean terminado = false;
 
         while (!terminado) {
-            String imprimir = ("==============================================================================================\n"
+            String imprimir = ("\n==============================================================================================\n"
                     + "Planeta: " + jogador.getPlanetaAtual().getDescricao() + "\n" + "Energia: " + jogador.getEnergia()
                     + "\n" + "Plantas de arvore: " + jogador.getPlantasDeArvore() + "\n" + "Nave: "
                     + "\n"
@@ -45,6 +45,7 @@ public class Jogo {
             terminado = processarComando(comando);
         }
         System.out.println("Obrigado por jogar. Ate mais!");
+        log += "\n" + "Obrigado por jogar. Ate mais!";
         imprimirLog();
     }
 
@@ -57,6 +58,7 @@ public class Jogo {
 
         boolean querSair = false;
         String palavraGatilho = comando.getGatilho();
+        log += "\ncomando: " + palavraGatilho + "\n";
         System.out.println("palavra de comando: " + palavraGatilho);
 
         if (palavraGatilho.equals("quit")) {
@@ -73,17 +75,20 @@ public class Jogo {
                     break;
                 case "viajar":
                     viajar(comando);
+                    log += "\n" + "Voce viajou para o planeta " + jogador.getPlanetaAtual().getNome() + "\n";
                     break;
                 case "ajuda":
                     imprimirAjuda();
                     break;
                 case "retornar":
                     jogador.retornarNave();
+                    log += "\n" + "Voce retornou para a nave" + "\n";
                     break;
                 case "saber":
                     saberPlaneta();
                 case "dica":
                     System.out.println(jogador.getPlanetaAtual().getDescricao());
+                    log += "\n" + jogador.getPlanetaAtual().getDescricao() + "\n";
                     break;
                 default:
                     System.out.println("Comando invalido!");
@@ -140,6 +145,7 @@ public class Jogo {
         if (comando.getComplemento() != null) {
             System.out.println("comando: " + comando.getGatilho());
             System.out.println("destino: " + comando.getComplemento());
+            log += "\n destino: " + comando.getComplemento() + "\n";
             if (comando.getComplemento().equals("sul")) {
                 jogador.getPlanetaAtual().getAmbiente().avancarCenario();
                 if (jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getItem() != null) {
