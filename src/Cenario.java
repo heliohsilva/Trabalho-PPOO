@@ -11,13 +11,8 @@ public class Cenario {
     private String item;
     private int sorteioItem;
     private Random rand;
-    private boolean first;
-    private boolean last;
 
     public Cenario(boolean first, boolean last) {
-        this.first = first;
-        this.last = last;
-
         saida = new ArrayList<String>();
 
         if (first) {

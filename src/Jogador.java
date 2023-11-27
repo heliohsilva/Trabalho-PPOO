@@ -14,6 +14,7 @@ public class Jogador {
     private Random rand;
 
     public Jogador() {
+ LogicaItens
         mochila = new Inventario(); // fernando
         energia = 100;
         plantasDeArvore = 3;
