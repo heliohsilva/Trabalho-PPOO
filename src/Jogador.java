@@ -14,7 +14,7 @@ public class Jogador {
     private Random rand;
 
     public Jogador() {
- LogicaItens
+        // LogicaItens
         mochila = new Inventario(); // fernando
         energia = 100;
         plantasDeArvore = 3;
@@ -110,13 +110,13 @@ public class Jogador {
         }
     }
 
-    public void pegarItem() { // Fernando: adicionei esse método 
+    public void pegarItem() { // Fernando: adicionei esse método
         if (planetaAtual.getAmbiente().getCenarioAtual().getTemItem() == true) { // Se o cenario atual tiver um item
             String nomeItem = planetaAtual.getAmbiente().getCenarioAtual().getItem();
-            planetaAtual.getAmbiente().getCenarioAtual().removeItem(); // O item é retirado do cenario 
+            planetaAtual.getAmbiente().getCenarioAtual().removeItem(); // O item é retirado do cenario
             mochila.adicionarItem(nomeItem);
         }
-    } 
+    }
 
     public void verificarMochila() { // Fernando
         mochila.listarItens();
@@ -125,13 +125,14 @@ public class Jogador {
     public void usarItem(String item) { // Fernando
         System.out.println("Verifique os itens disponiveis para uso");
         verificarMochila();
-        System.out.println("Insira o item que deseja usar: ")
+        System.out.println("Insira o item que deseja usar: ");
         Scanner scn = new Scanner(System.in);
         String entrada = scn.nextLine();
 
         if (mochila.verificarItem(entrada)) {
             if (entrada == "java coffee") {
                 incrementarEnergia(20);
+
                 mochila.removerItem(entrada);
             }
             if (entrada == "rebimboca da parafuseta") {
