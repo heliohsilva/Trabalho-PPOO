@@ -148,7 +148,7 @@ public class Jogo {
             log += "\n destino: " + comando.getComplemento() + "\n";
             if (comando.getComplemento().equals("sul")) {
                 jogador.getPlanetaAtual().getAmbiente().avancarCenario();
-                if (jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getItem() != null) {
+                if (jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getTemItem() == true) {
                     verificarItem(jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().getItem());
                 }
                 jogador.decrementarEnergia(1);
@@ -206,7 +206,9 @@ public class Jogo {
     }
 
     public void verificarItem(String item) {
-        System.out.println("Voce encontrou um " + item + "!");
+        jogador.getPlanetaAtual().getAmbiente().getCenarioAtual().exibirItem();
+        jogador.pegarItem();
+        /* 
         if (item == "java coffee") {
             jogador.incrementarEnergia(20);
             System.out.println("Voce recuperou 20 pontos de energia");
@@ -220,7 +222,7 @@ public class Jogo {
         if (item == "combustivel") {
             jogador.getNave().incrementarCombustivel(5);
             System.out.println("Voce recuperou 5 pontos de combustivel");
-        }
+        }*/
     }
 
     private void criarPlanetas() {
