@@ -14,21 +14,20 @@ public class Inventario {
     public void adicionarItem(String nome) {
         Item objetoAdd = new Item(nome);
         if (verificarItem(nome)) {
-            listaInventario.put(objetoAdd, listaInventario.get(objetoAdd).intValue() + 1);
+            Integer qtdAtual = listaInventario.get(objetoAdd);
+            listaInventario.put(objetoAdd, qtdAtual + 1);
         } else {    
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             listaInventario.put(objetoAdd, 1);
         }
     }
 
     public int buscarItem(String nome) {
-        int indice = 0; 
+        
         for (Map.Entry<Item, Integer> entrada : listaInventario.entrySet()) {
             Item objeto = entrada.getKey();
             if (objeto.getNome().equals(nome)) {
-                return indice; 
+                return entrada.getValue(); 
             }
-            indice++;
         }
         return -1; 
     }
@@ -41,11 +40,7 @@ public class Inventario {
     }
 
     public boolean verificarItem(String nome) {
-        int indice = buscarItem(nome);
-        if (indice != -1) {
-            return true;
-        }
-        return false; 
+        return buscarItem(nome) >= 0;
     }
 
     public void listarItens() {
