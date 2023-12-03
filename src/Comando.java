@@ -26,6 +26,7 @@ public class Comando {
         if (comando.size() > 2) {
             return Integer.parseInt(comando.get(2));
         }
+
         return 0;
     }
 }

@@ -49,7 +49,7 @@ public class Jogo {
         imprimirLog();
     }
 
-    private boolean processarComando(Comando comando) {
+    public boolean processarComando(Comando comando) {
 
         if (comando == null) {
             System.out.println("Comando invalido!");
@@ -99,14 +99,14 @@ public class Jogo {
 
     }
 
-    private void saberPlaneta() {
+    public void saberPlaneta() {
         if (analisador.getSaberNomePlaneta().equals("sim")) {
             jogador.getNave().decrementarCombustivel(3, 4);
             System.out.println("Voce esta no planeta " + jogador.getPlanetaAtual().getNome());
         }
     }
 
-    private boolean plantar() {
+    public boolean plantar() {
         if (jogador.plantarArvore()) {
             System.out.println("Parabens! Voce salvou a humanidade!");
             return true;
@@ -123,7 +123,7 @@ public class Jogo {
         return false;
     }
 
-    private void imprimirAjuda() {
+    public void imprimirAjuda() {
         System.out.println(
                 "Voce esta em um planeta ou estrela desconhecido e precisa encontrar o planeta Terra para plantar a arvore da vida.");
         System.out.println("o que voce sabe sobre este planeta e: " + jogador.getPlanetaAtual().getDescricao());
@@ -141,7 +141,7 @@ public class Jogo {
 
     }
 
-    private void explorarPlaneta(Comando comando) {
+    public void explorarPlaneta(Comando comando) {
         if (comando.getComplemento() != null) {
             System.out.println("comando: " + comando.getGatilho());
             System.out.println("destino: " + comando.getComplemento());
@@ -161,7 +161,7 @@ public class Jogo {
         }
     }
 
-    private boolean viajar(Comando comando) {
+    public boolean viajar(Comando comando) {
         if (jogador.getPlanetaAtual().getPosicao() != 0) {
             System.out.println("Voce precisa voltar para a nave antes de viajar");
         } else {
