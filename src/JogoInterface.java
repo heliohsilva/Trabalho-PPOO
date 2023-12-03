@@ -22,10 +22,11 @@ public class JogoInterface {
     private JTextField acaoEscolhida;
     private JButton enviarButton;
 
-    public JogoInterface(Jogador jogador, Nave nave, Jogo jogo) {
-        this.jogador = jogador;
+    public JogoInterface(Nave nave, Jogo jogo) {
+
         this.nave = nave;
         this.jogo = jogo;
+        jogador = jogo.getJogador();
 
         frame = new JFrame("Fundação Terra");
         titulo = new JLabel("Fundação Terra", SwingConstants.CENTER);
@@ -33,7 +34,7 @@ public class JogoInterface {
         tiros = new JLabel("Tiros restantes: ", SwingConstants.LEFT); // colocar tiros restante
         mudas = new JLabel("Mudas restantes: " + jogador.getPlantasDeArvore(), SwingConstants.LEFT);
         energia = new JLabel("Energia restante: " + jogador.getEnergia(), SwingConstants.LEFT);
-        dica = new JLabel("Dica: ");
+        dica = new JLabel("Dica: " + jogador.getPlanetaAtual().getDescricao());
 
         imgLabel1 = new JLabel("", SwingConstants.CENTER);
 
@@ -103,14 +104,28 @@ public class JogoInterface {
         // Adiciona o painel centralizado no centro
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
+        // adiciona painel esquerdo
+        JPanel actionPanel = new JPanel();
+        actionPanel.setBackground(Color.LIGHT_GRAY); // TEST
+        actionPanel.setPreferredSize(new Dimension(100, imgLabel1.getHeight()));
+
+        centerPanel.add(actionPanel, BorderLayout.WEST);
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+
         // Adiciona a caixa de texto e o botão
         JPanel acaoPanel = new JPanel();
         acaoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         acaoPanel.add(tituloAcao);
         acaoPanel.add(inputPanel);
 
-        mainPanel.add(acaoPanel, BorderLayout.SOUTH);
+        // Adiciona a caixa de texto e o botão
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(dica, BorderLayout.NORTH); // Adiciona a etiqueta dica acima do acaoPanel
+        bottomPanel.add(acaoPanel, BorderLayout.SOUTH);
 
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         configurarFrame(mainPanel);
     }
 
@@ -126,12 +141,53 @@ public class JogoInterface {
     }
 
     private void processarAcao(Comando comando) {
-        processarAcao(comando);
+
+        // String comandoDigitado = comando.getGatilho();
+
+        // if (comandoDigitado.equals("quit")) {
+
+        // frame.dispose();
+
+        // } else if (comandoDigitado.equals("ir")) { // quebrado
+
+        // jogo.explorarPlaneta(comando);
+
+        // } else if (comandoDigitado.equals("plantar")) {
+
+        // if (jogo.plantar()) {
+        // System.out.println("funfa");
+        // }
+
+        // } else if (comandoDigitado.equals("saber")) { // quebrado
+
+        // jogo.saberPlaneta();
+
+        // } else if (comandoDigitado.equals("viajar")) {
+
+        // jogo.viajar(comando);
+
+        // } else if (comandoDigitado.equals("ajuda")) {
+
+        // jogo.imprimirAjuda();
+
+        // } else if (comandoDigitado.equals("retornar")) { // quebrado
+
+        // jogador.retornarNave();
+
+        // } else if (comandoDigitado.equals("dica")) { // quebrado
+
+        // System.out.println("nao funciona");
+
+        // } else {
+
+        // System.out.println("Comando inválido!");
+
+        // }
+        jogo.processarComando(comando);
     }
 
-    public void mudarInterface(Comando comando) {
-        String comandoDigitado = comando.getGatilho();
-
+    public void mudarInterface() {
+        // falta implementar
     }
 
     public void montarFrame() {

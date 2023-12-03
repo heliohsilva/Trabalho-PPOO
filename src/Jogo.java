@@ -25,6 +25,10 @@ public class Jogo {
         log = "";
     }
 
+    public Jogador getJogador() {
+        return jogador;
+    }
+
     public void jogar() {
         imprimirBoasVindas();
 
