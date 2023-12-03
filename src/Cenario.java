@@ -1,5 +1,5 @@
 /*
- * @author helio
+ * @author helio e fernando 
  */
 
 import java.util.ArrayList;
@@ -57,5 +57,14 @@ public class Cenario {
 
     public ArrayList<String> getSaida() {
         return saida;
+    }
+
+    public boolean exibirItem() {
+        if (getTemItem() == true) {
+            System.out.println("-------Voce encontrou o seguinte item: " + getItem() + "-------");
+            return true;
+        } else {
+            return false; 
+        }
     }
 }

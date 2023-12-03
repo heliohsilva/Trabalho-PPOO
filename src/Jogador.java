@@ -1,12 +1,12 @@
 /*
- * @author helio
+ * @author helio e fernando
  */
 
 import java.util.Random;
 import java.util.Scanner;
 
 public class Jogador {
-    private Inventario mochila; // fernando
+    private Inventario mochila;
     private int plantasDeArvore;
     private int energia; // usada para explorar planetas. resetada sempre que o jogador viaja
     private CorpoCeleste planetaAtual;
@@ -14,8 +14,7 @@ public class Jogador {
     private Random rand;
 
     public Jogador() {
- LogicaItens
-        mochila = new Inventario(); // fernando
+        mochila = new Inventario();
         energia = 100;
         plantasDeArvore = 3;
         nave = new Nave();
@@ -115,7 +114,10 @@ public class Jogador {
             String nomeItem = planetaAtual.getAmbiente().getCenarioAtual().getItem();
             planetaAtual.getAmbiente().getCenarioAtual().removeItem(); // O item é retirado do cenario 
             mochila.adicionarItem(nomeItem);
+            System.out.println("Voce pegou o item!!");
         }
+        System.out.println("Veja sua mochila: ");
+        verificarMochila();
     } 
 
     public void verificarMochila() { // Fernando
@@ -123,27 +125,33 @@ public class Jogador {
     }
 
     public void usarItem(String item) { // Fernando
-        System.out.println("Verifique os itens disponiveis para uso");
-        verificarMochila();
-        System.out.println("Insira o item que deseja usar: ")
-        Scanner scn = new Scanner(System.in);
-        String entrada = scn.nextLine();
 
-        if (mochila.verificarItem(entrada)) {
-            if (entrada == "java coffee") {
-                incrementarEnergia(20);
-                mochila.removerItem(entrada);
-            }
-            if (entrada == "rebimboca da parafuseta") {
-                if (!nave.getEstado()) {
-                    nave.consertar();
+        if (mochila.mochilaVazia()) {
+            System.out.println("Nao ha itens no inventario");
+        } else {
+            System.out.println("Verifique os itens disponiveis para uso");
+            verificarMochila();
+            System.out.println("Insira o item que deseja usar: ")
+            Scanner scn = new Scanner(System.in);
+            String entrada = scn.nextLine();
+
+            if (mochila.verificarItem(entrada)) {
+                if (entrada == "java coffee") {
+                    incrementarEnergia(20);
+                    mochila.removerItem(entrada);
+                }
+                if (entrada == "rebimboca da parafuseta") {
+                    if (!nave.getEstado()) {
+                        nave.consertar();
+                        mochila.removerItem(entrada);
+                    }
+                }
+                if (entrada == "combustivel") {
+                    nave.incrementarCombustivel(5);
                     mochila.removerItem(entrada);
                 }
             }
-            if (entrada == "combustivel") {
-                nave.incrementarCombustivel(5);
-                mochila.removerItem(entrada);
-            }
         }
+
     }
 }
